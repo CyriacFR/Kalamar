@@ -1,0 +1,12 @@
+# What the parts build or write is ignored by their own .gitignore (launcher/, engine/). Here: what a contributor's
+# tools may leave at the top of the repository.
+__pycache__/
+*.log
+# Personal settings of coding assistants (the shared instructions, AGENTS.md and CLAUDE.md, are tracked)
+CLAUDE.local.md
+.claude/settings.local.json
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

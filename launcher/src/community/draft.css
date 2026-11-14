@@ -1,0 +1,121 @@
+/* ==========================================================================================================
+   The stage draft (Draft.tsx): the match screen's frame, the two teams on the sides, the turn in large over the
+   stage cards, the turn log at the bottom. Team colors are the design system's (Alpha blue, Bravo orange).
+   ========================================================================================================== */
+
+.dr { gap: var(--sp-4); }
+.dr .st-head { align-items: flex-start; }
+.dr-summary { margin: var(--sp-2) 0 0; color: var(--text-2); max-width: 48rem; }
+.dr .t-alpha { --team: var(--blue); }
+.dr .t-bravo { --team: var(--orange); }
+
+.dr-cols { flex: 1 0 auto; display: grid; grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr) minmax(12rem, 15rem); gap: var(--sp-4); align-items: start; }
+.dr-main { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+
+/* ---- a team ---- */
+.dr-team {
+  display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); border-radius: var(--r-xl);
+  background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--team); backdrop-filter: blur(14px);
+  transition: box-shadow var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.dr-team.dr-acting {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--team) 18%, transparent), transparent 70%), var(--surface);
+  box-shadow: 0 0 0 2px var(--team), 0 0 2.2rem color-mix(in srgb, var(--team) 35%, transparent);
+}
+.dr-team-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
+.dr-team .team-name { font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: 0.06em; color: var(--team); }
+.dr-first {
+  padding: 0.1rem 0.5rem; border-radius: 99px; font-size: var(--fs-xs); font-weight: 750;
+  background: color-mix(in srgb, var(--team) 22%, transparent); color: var(--text);
+}
+.dr-players { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.dr-player { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: var(--sp-2); row-gap: 0.1rem; }
+.dr-player .st-avatar { width: 2rem; height: 2rem; font-size: 0.95rem; grid-row: span 2; }
+.dr-player.me .dr-player-name { color: var(--text); }
+.dr-player-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-2); }
+.dr-crown { width: 1.05rem; height: 1.05rem; color: var(--lemon); }
+.dr-vote { grid-column: 2 / 4; font-size: var(--fs-xs); color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dr-team-state { margin: 0; min-height: 1.3em; font-size: var(--fs-sm); color: var(--text-2); display: flex; align-items: center; gap: 0.35em; }
+.dr-team-state svg { width: 1em; height: 1em; color: var(--mint); }
+.dr-acting .dr-team-state { color: var(--text); font-weight: 700; }
+.dr-bans { display: flex; flex-direction: column; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 1px solid var(--line); }
+.dr-bans-title { display: inline-flex; align-items: center; gap: 0.35em; font-size: var(--fs-xs); font-weight: 750; color: var(--team); text-transform: uppercase; letter-spacing: 0.06em; }
+.dr-bans-title svg { width: 1em; height: 1em; }
+.dr-bans .stg { font-size: var(--fs-sm); color: var(--text-2); text-decoration: line-through; text-decoration-color: var(--team); }
+
+/* ---- the turn in large ---- */
+.dr-now {
+  position: relative; display: flex; align-items: center; gap: var(--sp-5); padding: var(--sp-4) var(--sp-5); border-radius: var(--r-xl);
+  background: linear-gradient(135deg, rgba(31, 242, 192, 0.12), rgba(27, 20, 62, 0.75) 62%); border: 1px solid var(--line);
+}
+.dr-now .ring-box { width: clamp(6.5rem, 9vw, 8.5rem); }
+.dr-now-you { background: linear-gradient(135deg, rgba(31, 242, 192, 0.24), rgba(27, 20, 62, 0.75) 66%); border-color: rgba(31, 242, 192, 0.55); box-shadow: 0 0 2.4rem rgba(31, 242, 192, 0.18); }
+.dr-now-text { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; flex: 1; }
+.dr-act { display: flex; align-items: center; gap: var(--sp-3) var(--sp-4); flex-wrap: wrap; }
+.dr-picked-line { color: var(--text-2); font-weight: 650; min-width: 0; overflow-wrap: anywhere; }
+.dr-result { width: min(15rem, 34%); flex: none; }
+.dr-modes { display: flex; flex-direction: column; gap: var(--sp-2); }
+.dr-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.dr-chip {
+  display: inline-flex; align-items: center; gap: 0.4em; padding: 0.45rem 0.9rem; border-radius: 99px; font: inherit; font-weight: 700;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--line);
+}
+.dr-chip svg { width: 1em; height: 1em; }
+button.dr-chip { cursor: pointer; }
+button.dr-chip:hover { border-color: var(--mint); }
+button.dr-chip:focus-visible { outline: none; box-shadow: var(--focus); }
+.dr-chip.on, .dr-chip-picked { background: var(--mint); color: var(--mint-ink); border-color: var(--mint); }
+.dr-chip-banned { text-decoration: line-through; color: var(--text-3); border-color: var(--team, var(--magenta)); }
+.dr-chip-unavailable { color: var(--text-3); opacity: 0.6; }
+
+/* ---- the stage cards ---- */
+.dr-grid { padding: 0.45rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr)); gap: var(--sp-3); }
+/* Banned in the color of the team that banned it. */
+.dr .stc-banned.dr-by-alpha { --team: var(--blue); }
+.dr .stc-banned.dr-by-bravo { --team: var(--orange); }
+.dr .stc-banned.dr-by-alpha, .dr .stc-banned.dr-by-bravo { box-shadow: 0 0 0 2px var(--team), 0 0.35rem 1rem rgba(4, 2, 20, 0.35); }
+.dr .stc-banned.dr-by-alpha .stc-flag-ban, .dr .stc-banned.dr-by-bravo .stc-flag-ban { background: var(--team); color: #0b0920; }
+.dr .stc-banned.dr-by-alpha .stc-name, .dr .stc-banned.dr-by-bravo .stc-name { text-decoration-color: var(--team); }
+.dr .stc-banned.dr-by-alpha .stc-media::after { background: repeating-linear-gradient(135deg, rgba(92, 147, 255, 0.2) 0 0.6rem, transparent 0.6rem 1.2rem); }
+.dr .stc-banned.dr-by-bravo .stc-media::after { background: repeating-linear-gradient(135deg, rgba(255, 138, 61, 0.2) 0 0.6rem, transparent 0.6rem 1.2rem); }
+/* The stage retained: in front. */
+.dr .dr-picked { transform: scale(1.03); z-index: 1; }
+/* The player's turn: the cards that can be chosen breathe a little. */
+.dr-mine .dr-grid .stc-btn.dr-choosable:not(.stc-selected) { box-shadow: inset 0 0 0 1px rgba(31, 242, 192, 0.35), 0 0.35rem 1rem rgba(4, 2, 20, 0.35); }
+/* Not the player's turn: the available cards stay clear, the others step back. */
+.dr:not(.dr-mine) .dr-grid .stc-unavailable { opacity: 0.75; }
+
+/* ---- the turn log ---- */
+.dr-foot { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4); border-radius: var(--r-xl); background: var(--surface); border: 1px solid var(--line); }
+.dr-log { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: var(--sp-2) var(--sp-3); }
+.dr-log-turn { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-2); align-items: baseline; padding: var(--sp-2); border-radius: var(--r-md); font-size: var(--fs-sm); }
+.dr-log-n { grid-row: span 2; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--surface-3); font-weight: 800; font-size: var(--fs-xs); }
+.dr-log-what { display: flex; align-items: center; gap: 0.4em; flex-wrap: wrap; color: var(--text-2); }
+.dr-log-team { font-weight: 800; color: var(--team); }
+.dr-log-ico { width: 1em; height: 1em; color: var(--mint); }
+.dr-log-result { color: var(--text); font-weight: 650; overflow-wrap: anywhere; display: flex; flex-direction: column; }
+.dr-log-result .t-alpha, .dr-log-result .t-bravo { color: var(--text); }
+.dr-log-by { font-style: normal; font-weight: 500; color: var(--text-3); }
+.dr-log-live { color: var(--mint); font-weight: 750; animation: cm-pulse 1.4s ease-in-out infinite; }
+.dr-log-turn.dr-turn-now { background: rgba(31, 242, 192, 0.1); box-shadow: inset 0 0 0 1px rgba(31, 242, 192, 0.35); }
+.dr-log-turn.dr-turn-next { opacity: 0.55; }
+.dr-log-turn.dr-turn-now .dr-log-n { background: var(--mint); color: var(--mint-ink); }
+
+/* ---- the match card's line ---- */
+.dr-line { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-md); background: rgba(255, 255, 255, 0.05); }
+.dr-line-mine { background: rgba(31, 242, 192, 0.14); box-shadow: inset 0 0 0 1px rgba(31, 242, 192, 0.45); font-weight: 700; }
+.dr-then { color: var(--text-2); }
+
+@media (max-width: 1180px) {
+  /* The two teams side by side above the turn and the stages. */
+  .dr-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .dr-main { grid-column: 1 / -1; order: 1; }
+  .dr-team { padding: var(--sp-3) var(--sp-4); gap: var(--sp-2); }
+  .dr-bans { flex-direction: row; flex-wrap: wrap; align-items: center; padding-top: var(--sp-2); }
+}
+@media (max-width: 760px) {
+  .dr-cols { grid-template-columns: 1fr; }
+  .dr-now { flex-direction: column; align-items: flex-start; }
+  .dr-result { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .dr-log-live { animation: none; } .dr .dr-picked { transform: none; } }

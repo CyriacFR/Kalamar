@@ -1,0 +1,89 @@
+name: Bug report
+description: Something in the launcher, the install wizard or the game does not work as described.
+labels: ["bug", "needs: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem. Before you start:
+        - **Security problems** go privately to the maintainers, never in an issue: see SECURITY.md.
+        - **A problem on a community server** (an account, a ban, a result) is for that server's operator.
+        - **Never attach game files, keys, saves or screenshots that contain them**, and remove personal data from
+          logs (your Windows user name in paths, IP addresses, other players' names).
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before reporting
+      options:
+        - label: I use my own copy of the game and of its update, dumped from my own console.
+          required: true
+        - label: I searched the open issues and found nothing about this.
+          required: true
+        - label: This report contains no game file, key, save, and no personal data.
+          required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it happen?
+      options:
+        - Install wizard (building the game)
+        - Launcher interface
+        - The game (graphics, sound, input, crash)
+        - LAN play
+        - Community server features in the launcher
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Launcher version
+      description: Settings › About, or the commit you built from.
+      placeholder: "0.1.0 / commit abc1234"
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Windows version, CPU and RAM
+      placeholder: "Windows 11 24H2, 8-core CPU, 32 GB"
+    validations:
+      required: true
+  - type: input
+    id: gpu
+    attributes:
+      label: Graphics card and driver version
+      description: Your graphics driver's control panel, or Windows' Device Manager, shows both.
+      placeholder: "GPU model, driver 600.00"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Diagnostic and logs
+      description: |
+        The launcher's **Copy the diagnostic** button (shown with a failure, in the simple mode) copies the details of
+        the last launch with your Windows user name replaced. Logs, if needed: the install wizard's in
+        `<install folder>\logs\`, the game's in `userdata\logs\` of the game folder (`run-<date>-<time>.log`).
+        Paste only the relevant lines, after reading them.
+      render: text
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
+      description: Settings you changed, what you already tried, whether it happens every time.

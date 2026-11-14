@@ -1,0 +1,9 @@
+# Who reviews what. GitHub asks the owners of the files a pull request touches for a review.
+
+*                         @CyriacFR
+/engine/                  @CyriacFR
+/launcher/                @CyriacFR
+/.github/                 @CyriacFR
+/scripts/                 @CyriacFR
+/launcher/docs/releasing.md @CyriacFR
+/launcher/src-tauri/update-keys.txt @CyriacFR

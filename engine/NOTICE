@@ -1,0 +1,21 @@
+Kalamar engine
+==============
+
+The Kalamar engine is a fork of totk-pc-recomp by Valiantsin Dzerakh (valentderah),
+https://github.com/valentderah/totk-pc-recomp, imported at upstream commit
+ae30a61b7bee4a3db959a234e7459e95939ac596 (VERSION 0.3.13). totk-pc-recomp is
+distributed under the MIT License; LICENSE is kept unchanged and applies to the
+imported code and to the changes made in this fork.
+
+The upstream's changes from that commit to its release 0.4.0
+(7a37fc3c346cd6f2b3c80637effb27b880ce817b) were taken in later, one upstream
+commit at a time. Their contributors are named in the upstream's history; the
+history published with Kalamar starts fresh and does not reproduce it.
+
+totk-pc-recomp itself builds on other permissively licensed projects (LAS Recomp,
+MacNativeGames, Ryujinx and others). Their notices are listed in
+THIRD_PARTY_NOTICES.md and continue to apply.
+
+The fork adapts the toolchain to Splatoon 3 (program 0100C2500FC20000) version
+11.2.0. It contains no game code, game data or keys: the game, its keys and
+everything extracted, lifted or built from them stay outside the repository.

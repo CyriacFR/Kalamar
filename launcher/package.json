@@ -1,0 +1,34 @@
+{
+  "name": "kalamar-launcher",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:mock": "vite --mode mock --port 1430 --strictPort",
+    "shots": "node scripts/ui-shots.mjs",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test:ui": "node --test src/community/waiting.test.mjs src/community/queueHint.test.mjs src/community/draftState.test.mjs src/community/cleanText.test.mjs src/redact.test.mjs src/locales/locales.test.mjs src/gameLang.test.mjs src/sound/sounds.test.mjs src/install/wait.test.mjs src/discord/presence.test.mjs",
+    "tauri": "tauri",
+    "tauri:release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/release-build.ps1",
+    "bundle:runtime": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bundle-runtime.ps1"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "5.2.8",
+    "@fontsource-variable/rubik": "5.2.8",
+    "@fontsource/jetbrains-mono": "5.2.8",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "2.8.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16"
+  }
+}

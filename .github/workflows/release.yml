@@ -1,0 +1,121 @@
+# A draft release built by CI from a version tag. Optional and off by default:
+# launcher/docs/releasing.md, "7. A release built by CI", says what it does, what it does not do, and the risks of
+# each way of signing.
+#
+# It runs only when the repository variable KALAMAR_RELEASE_CI is set to "enabled" (Settings > Secrets and variables >
+# Actions > Variables); otherwise both jobs are skipped. It builds the launcher with the update repository compiled in,
+# writes the release manifest (kalamar-release.json), SHA256SUMS and the notes (the tag's message), and creates a DRAFT
+# release with them. It never signs: the maintainer downloads kalamar-release.json, signs it offline with the release
+# key and the official minisign tool (minisign -S, launcher/docs/releasing.md), attaches kalamar-release.json.minisig
+# to the draft, checks it (release_sign verify) and publishes. A launcher refuses a release without that signature.
+name: Release (draft, opt-in)
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RUST_TOOLCHAIN: "1.97.1"
+
+jobs:
+  build:
+    name: Build the release files (unsigned)
+    if: vars.KALAMAR_RELEASE_CI == 'enabled'
+    runs-on: windows-latest
+    timeout-minutes: 90
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - name: Rust toolchain
+        run: |
+          rustup toolchain install $env:RUST_TOOLCHAIN --profile minimal
+          rustup default $env:RUST_TOOLCHAIN
+      - name: Version from the tag, checked against the three manifests
+        id: version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          $v = $env:TAG -replace '^v', ''
+          if ($v -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?$') { throw "tag $env:TAG is not v<semver>" }
+          $pkg = (Get-Content launcher/package.json -Raw | ConvertFrom-Json).version
+          $conf = (Get-Content launcher/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          $cargo = (Select-String -Path launcher/src-tauri/Cargo.toml -Pattern '^version\s*=\s*"([^"]+)"' | Select-Object -First 1).Matches[0].Groups[1].Value
+          if ($pkg -ne $v -or $conf -ne $v -or $cargo -ne $v) { throw "versions differ: tag $v, package.json $pkg, tauri.conf.json $conf, Cargo.toml $cargo" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+      - name: Release notes from the tag's message
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          $notes = git tag -l --format='%(contents)' $env:TAG
+          if (-not ($notes -join '').Trim()) { throw "tag $env:TAG has no message: tag with git tag -a $env:TAG -m '<notes>'" }
+          [IO.File]::WriteAllText("$env:RUNNER_TEMP\notes.txt", (($notes -join "`n").Trim() + "`n"))
+      - name: Build (npm run tauri:release)
+        working-directory: launcher
+        env:
+          KALAMAR_UPDATE_REPO: ${{ github.repository }}
+          KALAMAR_DISCORD_CLIENT_ID: ${{ vars.KALAMAR_DISCORD_CLIENT_ID }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm run tauri:release
+      - name: Release folder, manifest and SHA256SUMS
+        working-directory: launcher/src-tauri
+        env:
+          REPO: ${{ github.repository }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $out = "$env:RUNNER_TEMP\release"
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $setup = "Kalamar_${env:VERSION}_x64-setup.exe"
+          Copy-Item target/release/kalamar.exe "$out\Kalamar.exe"
+          Copy-Item "target/release/bundle/nsis/$setup" "$out\$setup"
+          Copy-Item "$env:RUNNER_TEMP\notes.txt" "$out\RELEASE-NOTES.txt"
+          $channel = if ($env:VERSION -match '-') { 'beta' } else { 'stable' }
+          cargo run --release --locked --quiet --example release_sign -- manifest --repo $env:REPO --version $env:VERSION --channel $channel --notes "$out\RELEASE-NOTES.txt" --portable "$out\Kalamar.exe" --installer "$out\$setup" --out $out
+          if ($LASTEXITCODE -ne 0) { throw 'manifest' }
+          $lines = Get-ChildItem $out -File | Sort-Object Name | ForEach-Object { '{0}  {1}' -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name }
+          [IO.File]::WriteAllText("$out\SHA256SUMS", (($lines -join "`n") + "`n"))
+          Get-Content "$out\SHA256SUMS"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ steps.version.outputs.version }}
+          path: ${{ runner.temp }}/release/
+          if-no-files-found: error
+          retention-days: 14
+
+  draft:
+    name: Create the draft release
+    needs: build
+    if: vars.KALAMAR_RELEASE_CI == 'enabled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-${{ needs.build.outputs.version }}
+          path: release
+      - name: "Draft release (unsigned: the maintainer signs and publishes)"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          pre=""
+          case "$VERSION" in *-*) pre="--prerelease" ;; esac
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --draft --verify-tag $pre \
+            --title "Kalamar $VERSION" --notes-file release/RELEASE-NOTES.txt release/*

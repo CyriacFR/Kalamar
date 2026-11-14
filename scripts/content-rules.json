@@ -1,0 +1,391 @@
+{
+  "_comment": "Rules of scripts/check-content.py. Paths are relative to the repository's root; '**' crosses folders, '*' does not. A binary file or an image is added to reviewed_files only after someone looked at it and wrote what it is; a changed file must be reviewed again (its SHA-256 changes).",
+  "blocked_suffixes": [
+    ".xci",
+    ".xcz",
+    ".nsp",
+    ".nsz",
+    ".nca",
+    ".ncz",
+    ".tik",
+    ".cert",
+    ".nso",
+    ".nro",
+    ".nrr",
+    ".npdm",
+    ".keys",
+    ".bfres",
+    ".bntx",
+    ".bnsh",
+    ".sarc",
+    ".szs",
+    ".zs",
+    ".pack",
+    ".byml",
+    ".bgyml",
+    ".msbt",
+    ".bars",
+    ".bwav",
+    ".bfwav",
+    ".bfstm",
+    ".bfttf",
+    ".bfotf",
+    ".sharcb",
+    ".webm",
+    ".bin",
+    ".dat",
+    ".sav",
+    ".cnmt",
+    ".istorage",
+    ".romfs",
+    ".exefs",
+    ".pb",
+    ".spv",
+    ".dxbc",
+    ".pcache",
+    ".mp4",
+    ".png.bak",
+    ".dds",
+    ".astc",
+    ".ktx",
+    ".tga",
+    ".bmp",
+    ".rdc",
+    ".dmp"
+  ],
+  "blocked_names": [
+    "main",
+    "sdk",
+    "rtld",
+    "main.npdm",
+    "prod.keys",
+    "title.keys",
+    "dev.keys",
+    "s3save.keys.json",
+    "romfs.bin",
+    "extraction-manifest.json",
+    "merge_romfs.log",
+    "layout.json",
+    "target.json",
+    "pipeline-cache.bin",
+    "save.dat",
+    "romfs-index.bin",
+    "catalogue.json",
+    "match-options.json",
+    "profile.json",
+    "launcher-save-profile.json",
+    "session.dat",
+    "player.key",
+    "servers.json"
+  ],
+  "blocked_dirs": [
+    "exefs",
+    "romfs",
+    "lift",
+    "generated",
+    "userdata",
+    "shader-cache",
+    "save",
+    "game-cache",
+    "screens",
+    "build",
+    "work",
+    "dist",
+    "target",
+    "node_modules",
+    "profile-backup",
+    "save-profile-backup",
+    "logs",
+    "matches"
+  ],
+  "image_suffixes": [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".webp",
+    ".ico",
+    ".icns",
+    ".svg",
+    ".ttf",
+    ".otf",
+    ".woff",
+    ".woff2"
+  ],
+  "generated_marker_parts": [
+    "TOTK_RECOMP_",
+    "GENERATED_FROM_GAME_CODE"
+  ],
+  "max_file_bytes": 1048576,
+  "large_files": [],
+  "skip": [
+    "engine/tools/vendor/**",
+    "engine/runtime/third_party/**",
+    "engine/runtime/shaders/ffx/**"
+  ],
+  "manifested_archives": [
+    {
+      "path": "launcher/src-tauri/resources/runtime-src.tar.gz",
+      "manifest": "launcher/src-tauri/resources/runtime-src.json",
+      "field": "sha256",
+      "what": "The engine's source as the install wizard compiles it (scripts/bundle-runtime.ps1); the launcher's tests scan every entry (shipped_bundle_is_clean)."
+    },
+    {
+      "path": "launcher/src-tauri/resources/kalamar-tools.tar.gz",
+      "manifest": "launcher/src-tauri/resources/kalamar-tools.json",
+      "field": "sha256",
+      "what": "hactool and the shader translator, built from the engine's sources (examples/bundle_tools.rs), with their licenses."
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "engine/runtime/kalamar.ico",
+      "sha256": "b28549b6134dd9530871bf09cb265491de74f86ecad10c4d7525b644445d54dd",
+      "what": "Icon of the game executable: the launcher's icon (the same file as launcher/src-tauri/icons/icon.ico)."
+    },
+    {
+      "path": "engine/runtime/totk.ico",
+      "sha256": "c4aca9169740b27cc574ac3fb40566147268530d0e2eb73f8bffa27176d0d279",
+      "what": "Icon of the upstream project's own target, unchanged from totk-pc-recomp; used by that target only."
+    },
+    {
+      "path": "engine/runtime/ui/fonts/JetBrainsMono-ExtraBold-cyrillic.ttf",
+      "sha256": "01a545d62ca30df7a75cf72572fc3794941932568ac17060512bff656f09cd78",
+      "what": "JetBrains Mono ExtraBold (SIL Open Font License 1.1), unmodified; license beside it."
+    },
+    {
+      "path": "engine/runtime/ui/fonts/JetBrainsMono-ExtraBold-latin.ttf",
+      "sha256": "61fecd9e9b3dfd9e98981a918ee96eb18b731cbe5a3ce61091ce8abd42399bfe",
+      "what": "JetBrains Mono ExtraBold (SIL Open Font License 1.1), unmodified; license beside it."
+    },
+    {
+      "path": "engine/runtime/ui/fonts/Roboto-Medium.ttf",
+      "sha256": "8559132c89ad51d8a2ba5b171887a44a7ba93776e205f553573de228e64b45f8",
+      "what": "Roboto Medium (Apache-2.0), unmodified, as Dear ImGui ships it; license beside it."
+    },
+    {
+      "path": "launcher/app-icon.svg",
+      "sha256": "55f660b93cc94ae77a22511feca5ea28e84dde5a9c4f21b0b44c6ba44f44f502",
+      "what": "Source of the launcher's icon, a hand-written SVG."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_done.png",
+      "sha256": "483c31adddc87c98e11c5984c50684aa0850557284e19bd96efd430ac1ea36e8",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_done.svg",
+      "sha256": "97e21e880bdfc8cb41f5817bb4d51c99166d11199636ac7a25c2e19276b91749",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_match.png",
+      "sha256": "3891df2747e33789089378acaf5a15efe225a4abe9c130dc20655b624f901f51",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_match.svg",
+      "sha256": "3d4a0932a3c53d61aa15eecae28203106ad6a71bd6978fed6c39e58224fe9d36",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_online.png",
+      "sha256": "9022133006ad873ba131de4725ea4d24eb7cd02153a13231219d88e2669905aa",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_online.svg",
+      "sha256": "84276ee6b394234e75a5c198dd3b06ddabcd7622807a98b970e713164acc15be",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_room.png",
+      "sha256": "e74bdf7d84b2ba8ddc460b6f84bfe1ee70ed1472f6b7f8d672b88eac67c4beca",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_room.svg",
+      "sha256": "429216caf82173355e53bd275470785d5ed3801986c8f00be28e8e8ccfb91479",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_search.png",
+      "sha256": "56e02aadc8bc5d311a48d7f2e41c621cb6f5d7595b81cc6d8b3e70f3d062f253",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_search.svg",
+      "sha256": "487d482e35f448f3ce0c6059567c8b7f3c36503afca898dcf92be0a33f109574",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_solo.png",
+      "sha256": "019149aae7c8cff85643b670c02f3332330fd89ec18fce34648b3211e8f1a0f7",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_solo.svg",
+      "sha256": "875a232289eda06c89a3f89b210e957ffa71104a9cc591f1439b7257a8f2c42a",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_watch.png",
+      "sha256": "19a57b56231bb774bfbccb373d914f16a0a7713a68cd2b3d2dd1cf2f72d515df",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/act_watch.svg",
+      "sha256": "3b16de6ded40e7ccd5b80443b69697c90115c5a06111fa1c211d8a6fe1d79576",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/docs/discord-assets/kalamar_logo.png",
+      "sha256": "cd536dcb736436a150b23540f1ed62363c2c88bedb104de4561b4d591872a72e",
+      "what": "Pictogram of the optional Discord presence, drawn by launcher/scripts/discord-assets.mjs (original)."
+    },
+    {
+      "path": "launcher/docs/discord-assets/kalamar_logo.svg",
+      "sha256": "3d94d34e9aa2d5744b33fd1637a5ff00f52afd9e2b9df02dbc2e095c6c863d40",
+      "what": "Source of the PNG of the same name, drawn by launcher/scripts/discord-assets.mjs."
+    },
+    {
+      "path": "launcher/src-tauri/icons/128x128.png",
+      "sha256": "95cec80d7dcfdb40ee447333b109091b6d6b852d1aee08da9a54cfe74592f802",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/128x128@2x.png",
+      "sha256": "53e2ccf7871ea515d642ed34f91e7eca75867c2f5970486e7ebbbd064c743177",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/32x32.png",
+      "sha256": "0a86bae7200bdd23ee17b6eba4df27fd1934af1652d8c9a483f9a16a5b2b855e",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/64x64.png",
+      "sha256": "6d19dd68c58c04496dfac4797aecbe15f50e8a0a2c5ca81a079f8add32214d11",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square107x107Logo.png",
+      "sha256": "ce0355ca7afbbc050a78db68b935c542fa52cc5706c433f4a0cbca76cf1355e6",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square142x142Logo.png",
+      "sha256": "29a0d7507d1e747c0250efa35c97316101289165ebebb2e0575b3d7f2896b3ef",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square150x150Logo.png",
+      "sha256": "079a89e5b05259cd9bc98e9e94153e17f64e6d68db086526dc862468d32b8a7a",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square284x284Logo.png",
+      "sha256": "d7df9f469db85eea75e284c49a90277fdf86518764dda414dfd47405fc405176",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square30x30Logo.png",
+      "sha256": "1188f723dbca8ea6795e18c473954dedb3edcbf7243ee35b2d012f89fed3413a",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square310x310Logo.png",
+      "sha256": "c3ad666819cd30ff7bc1e8369c087626f3e2aff696f0f90a48580e40cf8b88c1",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square44x44Logo.png",
+      "sha256": "7d57cb1597b4dd2499b904578a5b90704c85c3502f0ccc1fed7e88729566c59b",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square71x71Logo.png",
+      "sha256": "9867cbfdc64d169057b97a2d545167db6acf4441c81371ce42932d6a8b187ef6",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/Square89x89Logo.png",
+      "sha256": "30dc5cd8fd57d26e679d8cd57f6e19fc3ac426683b6176a39c20f584036f3df3",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/StoreLogo.png",
+      "sha256": "85f3b523513292a6f462cb8537ac38b78acd942b9e1700805288c1fd48163628",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/icon.icns",
+      "sha256": "935cfe231a35e4ca96cb3d7fb8b86b1db52d9717776114dcd7275da766b68403",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/icon.ico",
+      "sha256": "b28549b6134dd9530871bf09cb265491de74f86ecad10c4d7525b644445d54dd",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    },
+    {
+      "path": "launcher/src-tauri/icons/icon.png",
+      "sha256": "12c336519a43deab762eb96495b1da07d4f0147f3028c240550f2da72c4037c0",
+      "what": "The launcher's icon at one size: original artwork made for the project (source: launcher/app-icon.svg)."
+    }
+  ],
+  "console_key_names": "\\b(header_key|key_area_key\\w*|titlekek\\w*|title_kek\\w*|master_key\\w*|package[12]_key\\w*|eticket_rsa\\w*|aes_kek_generation\\w*|aes_key_generation\\w*|sd_card_\\w*key\\w*|bis_key\\w*|tsec_\\w*key\\w*|mariko_\\w*|keyblob\\w*|save_mac_\\w*key\\w*|retail_specific_aes_key_source)\\b",
+  "token_patterns": {
+    "GitHub": "\\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}\\b|github_pat_[A-Za-z0-9_]{40,}",
+    "Slack": "\\bxox[abprs]-[A-Za-z0-9-]{10,}",
+    "AWS": "\\bAKIA[0-9A-Z]{16}\\b",
+    "Google API": "\\bAIza[0-9A-Za-z_-]{35}\\b",
+    "Discord bot": "\\b[MN][A-Za-z\\d]{23,25}\\.[\\w-]{6}\\.[\\w-]{27,38}\\b",
+    "OpenAI/Anthropic": "\\bsk-(ant-)?[A-Za-z0-9_-]{32,}"
+  },
+  "placeholder_users": [
+    "user",
+    "username",
+    "you",
+    "name",
+    "me",
+    "public",
+    "default",
+    "<user>",
+    "<name>",
+    "x",
+    "a",
+    "u",
+    "runneradmin",
+    "steamuser",
+    "deck",
+    "<you>"
+  ],
+  "allowed_lines": [
+    {
+      "path": "launcher/src-tauri/src/servercard.rs",
+      "contains": "BEGIN PRIVATE KEY-----\\nMIIB",
+      "why": "Test: a server card carrying a (fake, four characters long) private key block must be refused."
+    },
+    {
+      "path": "launcher/src-tauri/src/config.rs",
+      "contains": "Users\\Someone",
+      "why": "Test of the folders inside the player's profile: a made-up Windows profile 'Someone' (and 'Someone2', another one)."
+    },
+    {
+      "path": "launcher/src-tauri/src/config.rs",
+      "contains": "Users\\someone",
+      "why": "The same test: the made-up profile written in lower case (paths are compared without case)."
+    },
+    {
+      "path": "launcher/src-tauri/src/proto/engine.rs",
+      "contains": "Users\\\\someone",
+      "why": "Test: a path given as a build id is refused; a made-up profile 'someone'."
+    },
+    {
+      "path": "launcher/src/redact.test.mjs",
+      "contains": "Users\\\\Someone",
+      "why": "Test: the copied diagnostic hides the account name of a made-up profile 'Someone'."
+    }
+  ]
+}

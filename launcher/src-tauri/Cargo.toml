@@ -1,0 +1,68 @@
+[package]
+name = "kalamar"
+version = "0.1.0"
+description = "Kalamar launcher (unofficial fan project)"
+authors = ["The Kalamar contributors"]
+license = "MIT"
+edition = "2024"
+
+[lib]
+name = "kalamar_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+# Game-data readers (all MIT or MIT/Apache-2.0, pure Rust). They read the player's own files at run time.
+ruzstd = "=0.9.1"
+tegra_swizzle = "=0.4.0"
+texture2ddecoder = "=0.1.2"
+png = "=0.18.1"
+getrandom = "0.3"
+sha2 = "0.10"
+# Install wizard: open-file dialogs (scoped to "dialog:allow-open"), the bundled runtime source archive.
+tauri-plugin-dialog = "=2.8.4"
+tar = "=0.4.46"
+flate2 = "=1.1.11"
+# Community protocol client (src/proto/), only used once the player adds a server: HTTPS with certificate checks against
+# the operating system's store (rustls + platform verifier, ring), the event WebSocket over the same TLS stack.
+reqwest = { version = "=0.13.5", default-features = false, features = ["rustls-no-provider"] }
+rustls = { version = "=0.23.46", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-platform-verifier = "=0.6.2"
+tokio-rustls = { version = "=0.26.6", default-features = false, features = ["ring", "tls12"] }
+tokio-tungstenite = { version = "=0.29.0", default-features = false, features = ["handshake"] }
+tokio = { version = "1", features = ["net", "time", "sync", "macros", "rt", "rt-multi-thread"] }
+futures-util = { version = "0.3", default-features = false, features = ["std", "sink"] }
+# The launcher's own updates (src/update/, only in a build that names an update repository): verification of the
+# minisign signature (Ed25519) of a release manifest against the public keys compiled in. No dependencies of its own.
+minisign-verify = "=0.3.0"
+
+[dev-dependencies]
+# Tests and the release tool (examples/release_sign.rs) only, never linked into the launcher: minisign key pairs
+# (password-protected secret keys) and signatures, compatible with the minisign command-line tool.
+minisign = "=0.10.0"
+
+[target.'cfg(windows)'.dependencies]
+# Job objects (cancel kills the build's process tree), free space, memory, running processes, opening a verified
+# release installer (ShellExecute: it may ask for elevation itself), the notification-area icon and its notifications
+# (Shell_NotifyIconW), this computer's subnets (GetAdaptersAddresses: relay addresses that are a subnet's broadcast are
+# never measured, proto/relayping.rs), the local pipe of the Discord application for the opt-in presence (named pipes,
+# src/discord/).
+windows-sys = { version = "=0.61.2", features = ["Win32_Foundation", "Win32_Security", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_Storage_FileSystem", "Win32_System_SystemInformation", "Win32_System_Diagnostics_ToolHelp", "Win32_UI_WindowsAndMessaging", "Win32_Security_Cryptography", "Win32_UI_Shell", "Win32_System_LibraryLoader", "Win32_NetworkManagement_IpHelper", "Win32_NetworkManagement_Ndis", "Win32_Networking_WinSock", "Win32_System_Pipes", "Win32_System_IO", "Win32_Globalization"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+# Unwinding, not abort: the game-data readers run third-party decoders on files the player supplies (a "ready-made
+# dump" or a mod can hold anything) under `std::panic::catch_unwind` (src/game/guard.rs), so that a decoder's panic
+# (texture2ddecoder 0.1.2 has some on malformed ASTC blocks) is an error and not the end of the launcher. With
+# `panic = "abort"`, nothing can catch a panic.
+panic = "unwind"
+strip = true

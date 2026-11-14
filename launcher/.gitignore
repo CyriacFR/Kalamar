@@ -1,0 +1,27 @@
+# Dependencies and build outputs (npm ci, npm run build, cargo, npm run tauri build)
+node_modules/
+dist/
+target/
+src-tauri/target/
+src-tauri/target-*/
+src-tauri/gen/
+# Local build output
+dist-kalamar/
+# Release folders made by scripts/make-release.ps1 (uploaded by hand to GitHub Releases)
+/release/
+# A safety net: secret signing keys never enter the repository (docs/releasing.md); keep them offline
+*.key
+
+# Screenshots stay local: they can show local paths, and screens of the real launcher show game imagery
+docs/screens/
+
+# Local environment files of Vite, logs, Python caches, editor and OS files
+*.local
+*.log
+__pycache__/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

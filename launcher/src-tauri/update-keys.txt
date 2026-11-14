@@ -1,0 +1,5 @@
+# Minisign public keys that may sign Kalamar's release manifests (launcher/docs/releasing.md).
+# One per line: the second line of a minisign.pub file (56 characters, starting with RW).
+# First the maintainers' current key, then the backup key kept offline (used to rotate keys if the first is lost or leaked).
+# Only read when the build sets KALAMAR_UPDATE_REPO; with no repository the launcher has no update feature.
+# PUBLIC keys only. A secret key never goes in this repository.

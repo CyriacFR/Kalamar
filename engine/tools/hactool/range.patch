@@ -1,0 +1,174 @@
+Applied by tools/build_hactool.py after mbedtls-asm-clobbers.patch. Ours: an input can be a byte range of a bigger
+file. HACTOOL_INPUT_RANGE and HACTOOL_BASENCA_RANGE ("<offset>:<size>", decimal bytes) make hactool read the update
+and base Program NCAs where they lie inside the player's NSP files, so the RomFS merge of the launcher's install wizard
+(kit-tools/s3_merge.py --in-place) no longer copies them out first: 12 GB less written and 12 GB less free space needed
+for Splatoon 3 11.2.0. Every seek goes through range_fseeko64 (utils.h); without the variables nothing changes.
+diff --git a/Makefile b/Makefile
+index 73b7e3f..bfbb6dc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -20,7 +20,7 @@ WINDRES ?= windres
+ RESOURCES = hactool.res.o
+ endif
+ 
+-hactool$(EXEEXT): save.o sha.o aes.o extkeys.o rsa.o npdm.o bktr.o kip.o packages.o pki.o pfs0.o hfs0.o nca0_romfs.o romfs.o utils.o nax0.o nso.o lz4.o nca.o xci.o main.o filepath.o ConvertUTF.o cJSON.o $(RESOURCES)
++hactool$(EXEEXT): save.o sha.o aes.o extkeys.o rsa.o npdm.o bktr.o kip.o packages.o pki.o pfs0.o hfs0.o nca0_romfs.o romfs.o utils.o nax0.o nso.o lz4.o nca.o xci.o main.o filepath.o ConvertUTF.o cJSON.o range.o $(RESOURCES)
+ 	$(CC) -o $@ $^ -L $(LIBDIR) $(LDFLAGS)
+ 
+ hactool.res.o: hactool.rc hactool.manifest
+@@ -74,6 +74,8 @@ ConvertUTF.o: ConvertUTF.h
+ 
+ cJSON.o: cJSON.h
+ 
++range.o: range.h
++
+ clean:
+ 	rm -f *.o hactool hactool.exe
+ 
+diff --git a/main.c b/main.c
+index 7921cc4..96a700a 100644
+--- a/main.c
++++ b/main.c
+@@ -15,6 +15,7 @@
+ #include "packages.h"
+ #include "nso.h"
+ #include "save.h"
++#include "range.h"
+ 
+ static const char *prog_name = "hactool";
+ 
+@@ -309,6 +310,7 @@ int main(int argc, char **argv) {
+                     fprintf(stderr, "unable to open %s: %s\n", optarg, strerror(errno));
+                     return EXIT_FAILURE;
+                 }
++                range_from_env(nca_ctx.tool_ctx->base_file, "HACTOOL_BASENCA_RANGE");
+                 nca_ctx.tool_ctx->base_file_type = BASEFILE_NCA;
+                 nca_ctx.tool_ctx->base_nca_ctx = malloc(sizeof(*nca_ctx.tool_ctx->base_nca_ctx));
+                 if (nca_ctx.tool_ctx->base_nca_ctx == NULL) {
+@@ -512,6 +514,7 @@ int main(int argc, char **argv) {
+         return EXIT_FAILURE;
+     }
+ 
++    range_from_env(tool_ctx.file, "HACTOOL_INPUT_RANGE");
+     switch (tool_ctx.file_type) {
+         case FILETYPE_NCA: {
+             if (nca_ctx.tool_ctx->base_nca_ctx != NULL) {
+diff --git a/range.c b/range.c
+new file mode 100644
+index 0000000..c0c05eb
+--- /dev/null
++++ b/range.c
+@@ -0,0 +1,78 @@
++/* An input file that is a byte range of a bigger file. A merge of a game's RomFS with its update hands hactool the
++   base and update Program NCAs where they lie inside the NSP files, instead of copying them out first (12 GB of
++   writes and of free space for Splatoon 3). HACTOOL_INPUT_RANGE (the input) and HACTOOL_BASENCA_RANGE (--basenca) hold
++   "<offset>:<size>" in decimal bytes. Every seek of hactool goes through range_fseeko64 (utils.h): on a FILE given a
++   range, SEEK_SET counts from the range's start and SEEK_END from its end; SEEK_CUR is relative already. Reads are not
++   clamped: hactool reads an NCA only within the sizes its headers give. */
++#define HACTOOL_RANGE_IMPL
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <inttypes.h>
++#include "range.h"
++
++static int real_seek(FILE *f, int64_t off, int whence) {
++#if defined(_MSC_VER)
++    return _fseeki64(f, off, whence);
++#elif defined(__MINGW32__)
++    return fseeko64(f, off, whence);
++#else
++    return fseeko(f, (off_t)off, whence);
++#endif
++}
++
++#define MAX_RANGES 4
++
++static struct {
++    FILE *file;
++    int64_t start;
++    int64_t size;
++} ranges[MAX_RANGES];
++
++int range_fseeko64(FILE *f, int64_t off, int whence) {
++    for (int i = 0; f != NULL && i < MAX_RANGES; i++) {
++        if (ranges[i].file != f) {
++            continue;
++        }
++        if (whence == SEEK_SET) {
++            return real_seek(f, ranges[i].start + off, SEEK_SET);
++        }
++        if (whence == SEEK_END) {
++            return real_seek(f, ranges[i].start + ranges[i].size + off, SEEK_SET);
++        }
++        break;
++    }
++    return real_seek(f, off, whence);
++}
++
++void range_from_env(FILE *f, const char *var) {
++    const char *v = getenv(var);
++    if (f == NULL || v == NULL || *v == '\0') {
++        return;
++    }
++    char *end = NULL;
++    int64_t start = strtoll(v, &end, 10), size = -1;
++    if (end != v && *end == ':') {
++        const char *s = end + 1;
++        size = strtoll(s, &end, 10);
++        if (end == s) {
++            size = -1;
++        }
++    }
++    if (*end != '\0' || start < 0 || size <= 0) {
++        fprintf(stderr, "Invalid %s: expected <offset>:<size> in bytes\n", var);
++        exit(EXIT_FAILURE);
++    }
++    for (int i = 0; i < MAX_RANGES; i++) {
++        if (ranges[i].file == NULL) {
++            ranges[i].file = f;
++            ranges[i].start = start;
++            ranges[i].size = size;
++            real_seek(f, start, SEEK_SET);
++            printf("%s: in place at offset %" PRId64 ", %" PRId64 " bytes\n", var, start, size);
++            return;
++        }
++    }
++    fprintf(stderr, "Too many input ranges\n");
++    exit(EXIT_FAILURE);
++}
+diff --git a/range.h b/range.h
+new file mode 100644
+index 0000000..867eac6
+--- /dev/null
++++ b/range.h
+@@ -0,0 +1,11 @@
++#ifndef HACTOOL_RANGE_H
++#define HACTOOL_RANGE_H
++
++#include <stdio.h>
++#include <stdint.h>
++
++/* An input that is a byte range of a bigger file: an NCA read where it lies inside its NSP (range.c). */
++void range_from_env(FILE *f, const char *var);
++int range_fseeko64(FILE *f, int64_t off, int whence);
++
++#endif
+diff --git a/utils.h b/utils.h
+index 3567d07..4884cbf 100644
+--- a/utils.h
++++ b/utils.h
+@@ -62,6 +62,13 @@ inline int fseeko64(FILE *__stream, long long __off, int __whence)
+     #define fseeko64 fseek
+ #endif
+ 
++/* Every seek goes through range.c, so an input can be an NCA inside a bigger file (HACTOOL_INPUT_RANGE). */
++#ifndef HACTOOL_RANGE_IMPL
++#include "range.h"
++#undef fseeko64
++#define fseeko64 range_fseeko64
++#endif
++
+ static inline uint64_t media_to_real(uint64_t media) {
+     return MEDIA_SIZE * media;
+ }

@@ -1,0 +1,48 @@
+/* Typography: the one place that names the fonts. Every rule of the interface uses these variables:
+     --font-body     running text, labels, fields
+     --font-display  page titles, headings, buttons, navigation
+     --font-mono     codes, paths, logs (advanced mode)
+   To change the display face, add its @font-face here and put its family first in --font-display; the other stacks stay
+   as they are (Japanese falls back to the Windows UI fonts, which carry the kana and kanji).
+   Bundled fonts (SIL Open Font License 1.1): Archivo (variable: weight and width) and JetBrains Mono. Latin subsets
+   only. No network access: the files are copied into the app by the bundler. */
+:root {
+  --font-body: "Archivo Variable", "Segoe UI Variable Text", "Segoe UI", "Yu Gothic UI", "Meiryo UI", "Yu Gothic", Meiryo, "BIZ UDPGothic", "MS UI Gothic", system-ui, sans-serif;
+  --font-display: "Archivo Variable", "Segoe UI Variable Display", "Segoe UI", "Yu Gothic UI", "Meiryo UI", "Yu Gothic", Meiryo, "BIZ UDPGothic", "MS UI Gothic", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, "MS Gothic", monospace;
+  /* Archivo's width axis for the display roles (100% = normal, 125% = its widest). */
+  --display-stretch: 112%;
+}
+
+@font-face {
+  font-family: "Archivo Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("@fontsource-variable/archivo/files/archivo-latin-ext-wdth-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+}

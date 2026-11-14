@@ -1,0 +1,29 @@
+/* The resources of the executable of a target for another game than the upstream one (runtime/brand.c names the
+   brand): manifest, icon (the launcher's own mark, launcher/src-tauri/icons) and version information.
+   tools/build_game.py compiles it instead of totk.rc for those targets. */
+1 24 "kalamar.manifest"
+1 ICON "kalamar.ico"
+
+1 VERSIONINFO
+FILEVERSION 0,3,13,0
+PRODUCTVERSION 0,3,13,0
+FILEOS 0x4
+FILETYPE 0x1
+{
+  BLOCK "StringFileInfo"
+  {
+    BLOCK "040904B0"
+    {
+      VALUE "FileDescription", "Kalamar"
+      VALUE "ProductName", "Kalamar"
+      VALUE "InternalName", "kalamar"
+      VALUE "OriginalFilename", "kalamar.exe"
+      VALUE "FileVersion", "0.3.13"
+      VALUE "ProductVersion", "0.3.13"
+    }
+  }
+  BLOCK "VarFileInfo"
+  {
+    VALUE "Translation", 0x0409, 0x04B0
+  }
+}

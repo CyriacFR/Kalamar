@@ -1,0 +1,46 @@
+{
+  "commit": "5c26fd0b7bb31ebf0b84f8c1035ff1b41c2e7146",
+  "files": 807,
+  "bytes": 14059945,
+  "sha256": "d50c5fe384e38df136ab73d70413bcb034658a5309a3a7bb2aef28ff48df1527",
+  "kit_tools": [
+    [
+      "kit-tools/s3_extract.py",
+      "6c41dee79a812a5a86ba35d53bc4cecb8e5d13a24ea728bd0589710e2df8203a"
+    ],
+    [
+      "kit-tools/s3_merge.py",
+      "7827a3610fe1a611828751d1d3b56ebf4fca67548112af1d71015f808e7a8802"
+    ],
+    [
+      "kit-tools/profile/s3save.py",
+      "0ecf8744a3f46ddb56592d85c219eb48e4f2071a91e3e71cb13884a40d1798f5"
+    ],
+    [
+      "kit-tools/profile/profile.example.json",
+      "92549ca4d37df0fe67e556736a6510be4588b636e9033c08b1d286e515a6ece4"
+    ]
+  ],
+  "reviewed_binaries": [
+    [
+      "runtime/kalamar.ico",
+      "b28549b6134dd9530871bf09cb265491de74f86ecad10c4d7525b644445d54dd"
+    ],
+    [
+      "runtime/totk.ico",
+      "c4aca9169740b27cc574ac3fb40566147268530d0e2eb73f8bffa27176d0d279"
+    ],
+    [
+      "runtime/ui/fonts/JetBrainsMono-ExtraBold-cyrillic.ttf",
+      "01a545d62ca30df7a75cf72572fc3794941932568ac17060512bff656f09cd78"
+    ],
+    [
+      "runtime/ui/fonts/JetBrainsMono-ExtraBold-latin.ttf",
+      "61fecd9e9b3dfd9e98981a918ee96eb18b731cbe5a3ce61091ce8abd42399bfe"
+    ],
+    [
+      "runtime/ui/fonts/Roboto-Medium.ttf",
+      "8559132c89ad51d8a2ba5b171887a44a7ba93776e205f553573de228e64b45f8"
+    ]
+  ]
+}

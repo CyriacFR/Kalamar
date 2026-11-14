@@ -1,0 +1,132 @@
+{
+  "_comment": "Exceptions of scripts/check-english.py: the only places where text in another language than English is expected. Paths are relative to the repository's root; '**' crosses folders, '*' does not. Every entry says why.",
+  "skip": [
+    {
+      "paths": ["scripts/check-english.py", "scripts/english-only.json"],
+      "why": "This check's own word lists and exceptions."
+    },
+    {
+      "paths": ["engine/tools/vendor/**", "engine/runtime/third_party/**", "engine/runtime/shaders/ffx/**"],
+      "why": "Third-party code kept byte for byte as its authors published it (Ryujinx, MacNativeGames, Dear ImGui, AMD FidelityFX)."
+    },
+    {
+      "paths": ["engine/tools/xlate/Program.cs"],
+      "why": "Adapted from MacNativeGames (MIT) with its bilingual Chinese and English comments and Chinese console output. Translating it changes the source digest that the shader translator shipped with the launcher is checked against (launcher/src-tauri/resources/kalamar-tools.json), so it waits for the next rebuild of that program."
+    }
+  ],
+  "strings": [
+    {
+      "paths": ["launcher/src/locales/fr/**", "launcher/src/locales/es/**", "launcher/src/locales/ja/**"],
+      "why": "The launcher's interface translations (their comments are still checked)."
+    },
+    {
+      "paths": ["engine/runtime/ui_text.c", "engine/runtime/ui/text_*.inc", "engine/runtime/ui/ink_*.inc", "engine/installer/text/*.json"],
+      "why": "Translations of the in-game menu, the on-screen keyboard and the upstream installer (their comments are still checked)."
+    },
+    {
+      "paths": ["launcher/src/dev/mock/**"],
+      "why": "Made-up data of the browser preview, given in the four interface languages so that every language can be looked at."
+    },
+    {
+      "paths": ["launcher/src/discord/presence.test.mjs"],
+      "why": "Checks the Discord presence texts; one test checks the French translation."
+    }
+  ],
+  "words": [
+    {
+      "words": ["Français", "Español", "Latinoamérica", "Português", "Русский", "日本語", "한국어", "简体中文", "繁體中文"],
+      "why": "Language names written in their own language, as language menus show them."
+    },
+    {
+      "words": ["Atmosphère"],
+      "why": "Name of the homebrew project whose cheat-file format the engine reads."
+    }
+  ],
+  "lines": [
+    {
+      "path": "launcher/src-tauri/src/discord/*.rs",
+      "contains": ["\"é\".repeat"],
+      "why": "Unit test of non-ASCII input."
+    },
+    {
+      "path": "launcher/src-tauri/src/proto/discovery.rs",
+      "contains": ["d.description[\"fr\"]"],
+      "why": "Test of a server description given in several languages."
+    },
+    {
+      "path": "launcher/src-tauri/src/lan.rs",
+      "contains": ["\"é\"", "'é'"],
+      "why": "Tests of non-ASCII names and room codes."
+    },
+    {
+      "path": "launcher/src-tauri/src/game/romfs.rs",
+      "contains": ["\"é\".repeat"],
+      "why": "Test: a cache key of non-ASCII characters is refused."
+    },
+    {
+      "path": "launcher/src-tauri/src/util.rs",
+      "contains": ["'é'"],
+      "why": "Test: letters of other scripts are not hidden format characters."
+    },
+    {
+      "path": "launcher/src/community/cleanText.test.mjs",
+      "contains": ["cleanText(\"می", "cleanText(\"שלום"],
+      "why": "Tests: right-to-left text, and the zero-width non-joiner a Persian word needs, survive the cleaning of server text."
+    },
+    {
+      "path": "launcher/src-tauri/src/profile.rs",
+      "contains": ["Zoé", "ééééééééé"],
+      "why": "Tests that names are counted in characters, not bytes."
+    },
+    {
+      "path": "launcher/src-tauri/src/proto/contract.rs",
+      "contains": ["\"Zoé\""],
+      "why": "Test of a non-ASCII member name."
+    },
+    {
+      "path": "launcher/src-tauri/src/matchcode.rs",
+      "contains": ["Émilie"],
+      "why": "Test of a non-ASCII host name in a match code."
+    },
+    {
+      "path": "launcher/src-tauri/src/online.rs",
+      "contains": ["Léa's place"],
+      "why": "Test of a non-ASCII server name."
+    },
+    {
+      "path": "launcher/src-tauri/src/update/version.rs",
+      "contains": ["1.2.3-é"],
+      "why": "Test that a non-ASCII version is refused."
+    },
+    {
+      "path": "engine/runtime/resolution.c",
+      "contains": ["ゲームグラフィックス"],
+      "why": "The name of one of the game's memory heaps, matched byte for byte."
+    },
+    {
+      "path": "engine/runtime/ov_probe.c",
+      "contains": ["\"ОК\"", "\"Русский\""],
+      "why": "Probe that checks translated texts of the menu."
+    },
+    {
+      "path": "engine/installer/gui.py",
+      "contains": ["'Распаковка'"],
+      "why": "Recognizes a progress line of the installer in Russian."
+    },
+    {
+      "path": "engine/tests/installer_gui_test.py",
+      "contains": ["'Привет'", "'Корейский'"],
+      "why": "Tests of translated installer texts."
+    },
+    {
+      "path": "engine/tests/mods_romfs_check.py",
+      "contains": ["'Ж мод'"],
+      "why": "Test of a mod folder with a non-ASCII name."
+    },
+    {
+      "path": "engine/tools/make_release_linux.py",
+      "contains": ["УстановкаЁёЙй"],
+      "why": "Characters the bundled font must cover (Russian installer text)."
+    }
+  ]
+}

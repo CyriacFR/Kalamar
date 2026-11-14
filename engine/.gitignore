@@ -1,0 +1,90 @@
+# Reference checkouts of upstream projects (cloned locally, never committed)
+/refs/
+
+# Downloaded toolchain binaries and Python environments
+/toolchain/
+/.venv/
+/.venv-py314/
+__pycache__/
+
+# Personal paths to game files and keys
+/config.local.toml
+
+# Game inputs and everything derived from them. Never commit these.
+# tools/check_content.py enforces the same rule in CI.
+/game/
+/build/
+/generated/
+/lift/
+/work/
+/exefs/
+/romfs/
+/extracted/
+# ExeFS modules have no extension: ignore files with their names anywhere, but not directories of that name.
+main
+sdk
+rtld
+subsdk[0-9]
+!main/
+!sdk/
+!rtld/
+!subsdk[0-9]/
+# Generator output that might land in the tree by mistake (recomp/gen.py writes it under --out).
+main_[0-9][0-9][0-9][0-9].c
+sdk_[0-9][0-9][0-9][0-9].c
+subsdk[0-9]_[0-9][0-9][0-9][0-9].c
+main_table.c
+sdk_table.c
+subsdk[0-9]_table.c
+folded.txt
+*.nro
+*.nrr
+*.bin
+*.xci
+*.xcz
+*.nsp
+*.nsz
+*.nca
+*.ncz
+*.tik
+*.keys
+*.nso
+*.npdm
+*.zs
+*.pack
+*.sarc
+*.bfres
+*.bntx
+*.bnsh
+*.webm
+
+# Build outputs
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.obj
+*.o
+*.lib
+*.a
+*.so
+*.so.*
+*.AppImage
+
+# .NET build output of the shader translator (tools/build_xlate.py)
+/tools/xlate/bin/
+/tools/xlate/obj/
+
+
+# Editor settings
+.vs/
+.vscode/
+.idea/
+
+# Patch leftovers, logs and OS files
+*.orig
+*.rej
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store

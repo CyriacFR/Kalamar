@@ -1,0 +1,76 @@
+# The launcher: type check, interface build and logic tests on Linux; the Rust tests and clippy on Windows, where the
+# launcher runs. No secret is used, so pull requests from forks run it as they are.
+name: Launcher
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_TOOLCHAIN: "1.97.1"
+
+jobs:
+  interface:
+    name: Interface (tsc, build, test:ui)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: launcher
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: launcher/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Type check
+        run: npx tsc --noEmit
+      - name: Production build of the interface
+        run: npm run build
+      - name: Logic tests
+        run: npm run test:ui
+
+  rust:
+    name: Back end (cargo test, clippy) on Windows
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: launcher/package-lock.json
+      - name: Rust toolchain
+        run: |
+          rustup toolchain install $env:RUST_TOOLCHAIN --profile minimal --component clippy
+          rustup default $env:RUST_TOOLCHAIN
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: launcher/src-tauri -> target
+      - name: Interface build (the back end embeds it)
+        working-directory: launcher
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Tests
+        working-directory: launcher/src-tauri
+        run: cargo test --locked
+      - name: Clippy
+        working-directory: launcher/src-tauri
+        run: cargo clippy --locked --all-targets -- -D warnings

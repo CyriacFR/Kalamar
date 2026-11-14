@@ -1,0 +1,9 @@
+# Issues must use one of the forms.
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/CyriacFR/Kalamar/security/advisories/new
+    about: Privately, never in a public issue (SECURITY.md).
+  - name: The reference server, the protocol, or running a server
+    url: https://github.com/CyriacFR/kalamar-server/issues
+    about: The server repository has its own issues and documentation.

@@ -1,0 +1,35 @@
+name: Feature request
+description: An idea for the launcher, the install wizard or the engine.
+labels: ["enhancement", "needs: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome. Some are out of scope whatever their merit (CONTRIBUTING.md, "What is not accepted"):
+        anything that ships or downloads game content, helps to obtain the game or keys, gives an advantage over other
+        players, adds telemetry, or makes the game or the launcher contact anyone the player did not choose.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to do, and what stops you today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: It needs no game content in the repository and no new network access, or the proposal says which one and why.
+          required: true
+        - label: I would like to work on it myself.

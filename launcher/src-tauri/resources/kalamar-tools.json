@@ -1,0 +1,54 @@
+{
+  "sha256": "e9c5475d0b4a7e0cfcc1fa09c018e107f29adc7d4dfef815f6cb3c9fc9494bdd",
+  "files": [
+    [
+      "bin/hactool.exe",
+      "c2789fafc2ae646704a6e4e43dcc98c6a674a4c2d0cb7a087396ca1a0c1dd514"
+    ],
+    [
+      "licenses/MacNativeGames-LICENSE.txt",
+      "a035ee21f927d2247f30bedc8964c95b3a4d794f76c78cad178b68731815a79a"
+    ],
+    [
+      "licenses/Ryujinx-LICENSE.txt",
+      "781bbdf040b7d0286c47cca6bffdb9148dfe751c0c9cabdf1a1752412a2e56b4"
+    ],
+    [
+      "licenses/dotnet-runtime-LICENSE.txt",
+      "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b"
+    ],
+    [
+      "licenses/dotnet-runtime-THIRD-PARTY-NOTICES.txt",
+      "6d15e10a101c6bfff2ab4429ed061bf76c456fc4b23ad6b03e0d0f8377148a21"
+    ],
+    [
+      "licenses/engine-LICENSE.txt",
+      "63833cc1eff937e4c66cfd07be2d373499b1c6390361dcc3ebade17391021495"
+    ],
+    [
+      "licenses/hactool-LICENSE.txt",
+      "bde8a8c9f1fdcecaec2dd6f4733ed939a5ff2317a72126668e61ecae049eb5ab"
+    ],
+    [
+      "licenses/mbedtls-LICENSE.txt",
+      "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    ],
+    [
+      "licenses/totk_xlate-LICENSE.txt",
+      "5811600bb8fc4522d3310e8e0e637a1bb14b7c64412f8cfc6234872eb53129b9"
+    ],
+    [
+      "xlate/totk_xlate.exe",
+      "98089edf8fb17c1b991986e1dadfbe12975c7864a416fb1d6d8e020a19fac70f"
+    ],
+    [
+      "xlate/totk_xlate.id",
+      "7cbb70a0b85ab64c973731de5724b5892aab914cb7460858949eea214113aac4"
+    ]
+  ],
+  "engine_commit": "080c25996816d44494fad37f123ddf0763889dbf",
+  "xlate_inputs": "7d2571dfc8a3e6d6974559b2ccddf9a3407946b82906d52702ab1143a7fa6de9",
+  "xlate_id": "e47973fdb4322c9d9f5b1f9ce611faab6cc58ccd944f9cc1282fb9e144fde80c",
+  "hactool": "SciresM/hactool 1d64a83 + portable.patch ce8fb1e4ccbe, unicode.patch 160af76bb1be, mbedtls-asm-clobbers.patch 313d236ea93f, range.patch 26eedfeaa971",
+  "hactool_ranges": true
+}

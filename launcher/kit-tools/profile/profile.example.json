@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "Player8",
+  "style": "octoling_f",
+  "hair": 33,
+  "eyebrows": 21,
+  "legwear": 1,
+  "legwear_variation": 2,
+  "skin": 2,
+  "eyes": 18,
+  "skip_first_launch": true,
+  "splashtag": {"banner": 11020, "adjective": 200, "subject": 300, "badges": [0, 0, 0]},
+  "gear": {"head": 1018, "clothes": 5001, "shoes": 6003},
+  "weapon": 50,
+  "emote": 7,
+  "unlock_all": false
+}

@@ -1,0 +1,62 @@
+# Issue and pull request labels. GitHub does not read this file by itself: create the labels once by hand,
+# or with the GitHub CLI, for example:
+#   gh label create "area: engine" --color 1D76DB --description "The recompiler and the runtime (engine/)"
+# Names used by the issue forms and dependabot.yml: bug, enhancement, "needs: triage", dependencies,
+# "area: launcher", "area: ci".
+- name: bug
+  color: "D73A4A"
+  description: Something does not work as described
+- name: enhancement
+  color: "A2EEEF"
+  description: A new feature or an improvement
+- name: documentation
+  color: "0075CA"
+  description: Guides, READMEs, comments
+- name: question
+  color: "D876E3"
+  description: A question the documentation should answer
+- name: "needs: triage"
+  color: "FBCA04"
+  description: Not looked at by a maintainer yet
+- name: "needs: reproduction"
+  color: "FBCA04"
+  description: Steps or a log are missing to reproduce it
+- name: "needs: decision"
+  color: "FBCA04"
+  description: Waits for a maintainer's decision
+- name: good first issue
+  color: "7057FF"
+  description: Small, well described, a good start
+- name: help wanted
+  color: "008672"
+  description: The maintainers would welcome a pull request
+- name: "area: engine"
+  color: "1D76DB"
+  description: The recompiler and the runtime (engine/)
+- name: "area: launcher"
+  color: "1D76DB"
+  description: The launcher's interface and back end (launcher/)
+- name: "area: install wizard"
+  color: "1D76DB"
+  description: Building the game from the player's files
+- name: "area: community"
+  color: "1D76DB"
+  description: The launcher's client of community servers
+- name: "area: ci"
+  color: "1D76DB"
+  description: Workflows, repository checks, releases
+- name: translation
+  color: "C5DEF5"
+  description: Interface languages
+- name: dependencies
+  color: "0366D6"
+  description: Dependency updates
+- name: security
+  color: "B60205"
+  description: Security hardening (vulnerabilities are reported privately, SECURITY.md)
+- name: duplicate
+  color: "CFD3D7"
+  description: Already reported
+- name: out of scope
+  color: "E4E669"
+  description: Not accepted by the project's rules (CONTRIBUTING.md)

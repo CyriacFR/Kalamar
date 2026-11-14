@@ -1,0 +1,1255 @@
+{
+  "version": 1,
+  "_comment": "Data-driven description of the runtime settings the launcher edits (totk.ini, see engine/docs/settings.md and totk.ini.example). A copy named settings-schema.json in the launcher data directory replaces this one, so new keys (for example the mouse-to-gyro mode) can be added without rebuilding. 'slider' with 'step' asks for a slider next to the number box.",
+  "sections": [
+    {
+      "id": "display",
+      "label": {
+        "fr": "Affichage",
+        "en": "Display",
+        "es": "Pantalla",
+        "ja": "画面"
+      }
+    },
+    {
+      "id": "performance",
+      "label": {
+        "fr": "Fluidité",
+        "en": "Frame rate",
+        "es": "Fluidez",
+        "ja": "フレームレート"
+      }
+    },
+    {
+      "id": "mouse",
+      "label": {
+        "fr": "Souris et visée",
+        "en": "Mouse and aiming",
+        "es": "Ratón y puntería",
+        "ja": "マウスと照準"
+      }
+    },
+    {
+      "id": "controller",
+      "label": {
+        "fr": "Manette",
+        "en": "Controller",
+        "es": "Mando",
+        "ja": "コントローラー"
+      }
+    },
+    {
+      "id": "save",
+      "label": {
+        "fr": "Sauvegarde",
+        "en": "Save",
+        "es": "Guardado",
+        "ja": "セーブデータ"
+      }
+    },
+    {
+      "id": "language",
+      "label": {
+        "fr": "Langue du jeu",
+        "en": "Game language",
+        "es": "Idioma del juego",
+        "ja": "ゲームの言語"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "window_size",
+      "section": "display",
+      "ini_section": "display",
+      "type": "size",
+      "default": "1920x1080",
+      "min_size": [
+        640,
+        360
+      ],
+      "max_size": [
+        7680,
+        4320
+      ],
+      "presets": [
+        "1280x720",
+        "1600x900",
+        "1920x1080",
+        "2560x1440",
+        "3840x2160"
+      ],
+      "label": {
+        "fr": "Taille de la fenêtre",
+        "en": "Window size",
+        "es": "Tamaño de la ventana",
+        "ja": "ウィンドウサイズ"
+      },
+      "help": {
+        "fr": "Zone client en pixels (640x360 à 7680x4320).",
+        "en": "Client area in pixels (640x360 to 7680x4320).",
+        "es": "Área cliente en píxeles (de 640x360 a 7680x4320).",
+        "ja": "クライアント領域のピクセル数です（640x360～7680x4320）。"
+      }
+    },
+    {
+      "key": "fullscreen",
+      "section": "display",
+      "ini_section": "display",
+      "type": "bool",
+      "default": "0",
+      "label": {
+        "fr": "Plein écran sans bordure",
+        "en": "Borderless fullscreen",
+        "es": "Pantalla completa sin bordes",
+        "ja": "ボーダーレスフルスクリーン"
+      },
+      "help": {
+        "fr": "F11 en jeu bascule aussi ce réglage.",
+        "en": "F11 in game toggles this too.",
+        "es": "F11 en el juego también activa o desactiva esta opción.",
+        "ja": "ゲーム中にF11キーでも切り替えられます。"
+      }
+    },
+    {
+      "key": "output_res",
+      "section": "display",
+      "ini_section": "display",
+      "type": "size",
+      "default": "1920x1080",
+      "min_size": [
+        1280,
+        720
+      ],
+      "max_size": [
+        7680,
+        4320
+      ],
+      "presets": [
+        "1280x720",
+        "1920x1080",
+        "2560x1440",
+        "3840x2160"
+      ],
+      "label": {
+        "fr": "Résolution du jeu",
+        "en": "Game resolution",
+        "es": "Resolución del juego",
+        "ja": "ゲームの解像度"
+      },
+      "help": {
+        "fr": "Taille de l'image et de l'interface. Lue au démarrage.",
+        "en": "Size the game draws in. Read at start.",
+        "es": "Tamaño de la imagen y de la interfaz. Se lee al iniciar.",
+        "ja": "映像とインターフェースの描画サイズです。起動時に読み込まれます。"
+      }
+    },
+    {
+      "key": "render_scale",
+      "section": "display",
+      "ini_section": "display",
+      "type": "choice_int",
+      "default": "game",
+      "options": [
+        "game"
+      ],
+      "min": 25,
+      "max": 400,
+      "label": {
+        "fr": "Échelle de rendu 3D (%)",
+        "en": "3D render scale (%)",
+        "es": "Escala de renderizado 3D (%)",
+        "ja": "3D描画スケール（%）"
+      },
+      "help": {
+        "fr": "« game » ou un pourcentage de 25 à 400. Lue au démarrage.",
+        "en": "'game' or a percentage from 25 to 400. Read at start.",
+        "es": "«game» o un porcentaje de 25 a 400. Se lee al iniciar.",
+        "ja": "「game」または25～400のパーセント値です。起動時に読み込まれます。"
+      }
+    },
+    {
+      "key": "vk_present",
+      "section": "display",
+      "ini_section": "display",
+      "type": "enum",
+      "default": "mailbox",
+      "options": [
+        "mailbox",
+        "fifo",
+        "immediate"
+      ],
+      "label": {
+        "fr": "Mode de présentation",
+        "en": "Presentation mode",
+        "es": "Modo de presentación",
+        "ja": "表示モード"
+      },
+      "help": {
+        "fr": "mailbox (défaut), fifo (V-sync) ou immediate (sans V-sync, déchirures possibles).",
+        "en": "mailbox (default), fifo (vsync) or immediate (no vsync, tearing).",
+        "es": "mailbox (predeterminado), fifo (V-sync) o immediate (sin V-sync, puede haber desgarros).",
+        "ja": "mailbox（既定）、fifo（V-sync）、immediate（V-syncなし、ティアリングが出ることがあります）。"
+      }
+    },
+    {
+      "key": "upscaler",
+      "section": "display",
+      "ini_section": "display",
+      "type": "enum",
+      "default": "fsr",
+      "options": [
+        "fsr",
+        "bilinear"
+      ],
+      "label": {
+        "fr": "Mise à l'échelle",
+        "en": "Upscaler",
+        "es": "Escalado",
+        "ja": "アップスケーラー"
+      },
+      "help": {
+        "fr": "Utilisée quand la fenêtre est plus grande que la résolution du jeu.",
+        "en": "Used when the window is larger than the game resolution.",
+        "es": "Se usa cuando la ventana es mayor que la resolución del juego.",
+        "ja": "ウィンドウがゲームの解像度より大きいときに使われます。"
+      }
+    },
+    {
+      "key": "sharpness",
+      "section": "display",
+      "ini_section": "display",
+      "type": "int",
+      "default": "80",
+      "min": 0,
+      "max": 100,
+      "label": {
+        "fr": "Netteté FSR",
+        "en": "FSR sharpness",
+        "es": "Nitidez de FSR",
+        "ja": "FSRのシャープネス"
+      },
+      "help": {
+        "fr": "0 (désactivée) à 100.",
+        "en": "0 (off) to 100.",
+        "es": "De 0 (desactivada) a 100.",
+        "ja": "0（オフ）～100。"
+      }
+    },
+    {
+      "key": "aspect",
+      "section": "display",
+      "ini_section": "display",
+      "type": "enum",
+      "default": "fit",
+      "options": [
+        "fit",
+        "stretch"
+      ],
+      "label": {
+        "fr": "Forme de l'image",
+        "en": "Picture shape",
+        "es": "Forma de la imagen",
+        "ja": "画面の形"
+      },
+      "help": {
+        "fr": "fit garde les proportions (bandes noires), stretch remplit la fenêtre.",
+        "en": "fit keeps the shape (black bars), stretch fills the window.",
+        "es": "fit mantiene las proporciones (bandas negras), stretch llena la ventana.",
+        "ja": "fitは縦横比を保ち（黒帯が出ます）、stretchはウィンドウいっぱいに広げます。"
+      }
+    },
+    {
+      "key": "perf_overlay",
+      "section": "display",
+      "ini_section": "display",
+      "type": "enum",
+      "default": "off",
+      "options": [
+        "off",
+        "fps",
+        "full"
+      ],
+      "label": {
+        "fr": "Affichage des performances",
+        "en": "Performance overlay",
+        "es": "Indicador de rendimiento",
+        "ja": "パフォーマンス表示"
+      },
+      "help": {
+        "fr": "F10 en jeu change le mode.",
+        "en": "F10 in game cycles the modes.",
+        "es": "F10 en el juego cambia el modo.",
+        "ja": "ゲーム中にF10キーで表示モードが切り替わります。"
+      }
+    },
+    {
+      "key": "fps_limit",
+      "section": "performance",
+      "ini_section": "frame rate",
+      "type": "choice_int",
+      "default": "60",
+      "options": [
+        "display"
+      ],
+      "min": 30,
+      "max": 240,
+      "label": {
+        "fr": "Limite d'images par seconde",
+        "en": "Frame-rate limit",
+        "es": "Límite de fotogramas por segundo",
+        "ja": "フレームレート上限"
+      },
+      "help": {
+        "fr": "Un entier de 30 à 240, ou « display » (fréquence de l'écran). Au-dessus de 60 : expérimental.",
+        "en": "A whole number from 30 to 240, or 'display' (monitor refresh rate). Above 60 is experimental.",
+        "es": "Un número entero de 30 a 240, o «display» (frecuencia de la pantalla). Por encima de 60 es experimental.",
+        "ja": "30～240の整数、または「display」（モニターのリフレッシュレート）。60を超える値は実験的です。"
+      }
+    },
+    {
+      "key": "mouse_mode",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "enum",
+      "default": "direct",
+      "options": [
+        "direct",
+        "stick"
+      ],
+      "label": {
+        "fr": "Mode de la souris",
+        "en": "Mouse camera mode",
+        "es": "Modo de cámara con el ratón",
+        "ja": "マウスのカメラモード"
+      },
+      "help": {
+        "fr": "direct : rotation brute de la caméra ; stick : la souris fait office de stick droit.",
+        "en": "direct: raw camera turn; stick: the mouse acts as a right stick.",
+        "es": "direct: giro directo de la cámara; stick: el ratón actúa como el stick derecho.",
+        "ja": "direct：カメラを直接回転します。stick：マウスを右スティックとして扱います。"
+      }
+    },
+    {
+      "key": "mouse_sens",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "1",
+      "min": 0,
+      "max": 10,
+      "slider": true,
+      "step": 0.1,
+      "label": {
+        "fr": "Sensibilité de la souris",
+        "en": "Mouse sensitivity",
+        "es": "Sensibilidad del ratón",
+        "ja": "マウス感度"
+      },
+      "help": {
+        "fr": "0 à 10 ; 0 désactive la caméra à la souris.",
+        "en": "0 to 10; 0 turns the mouse camera off.",
+        "es": "De 0 a 10; 0 desactiva la cámara con el ratón.",
+        "ja": "0～10。0にするとマウスでのカメラ操作がオフになります。"
+      }
+    },
+    {
+      "key": "mouse_aim_scale",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "1",
+      "min": 0.1,
+      "max": 3,
+      "slider": true,
+      "step": 0.1,
+      "label": {
+        "fr": "Multiplicateur de visée",
+        "en": "Aim multiplier",
+        "es": "Multiplicador de puntería",
+        "ja": "照準時の倍率"
+      },
+      "help": {
+        "fr": "Appliqué à la souris pendant la visée (0,1 à 3).",
+        "en": "Applied to the mouse while aiming (0.1 to 3).",
+        "es": "Se aplica al ratón al apuntar (de 0,1 a 3).",
+        "ja": "照準中のマウスに適用されます（0.1～3）。"
+      }
+    },
+    {
+      "key": "menu_cursor",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "bool",
+      "default": "1",
+      "label": {
+        "fr": "Souris dans les menus",
+        "en": "Mouse in menus",
+        "es": "Ratón en los menús",
+        "ja": "メニューでのマウス操作"
+      },
+      "help": {
+        "fr": "Le pointeur est utilisable dans les menus du jeu.",
+        "en": "The pointer works in the game's menus.",
+        "es": "El puntero se puede usar en los menús del juego.",
+        "ja": "ゲームのメニューでマウスポインターを使えます。"
+      }
+    },
+    {
+      "key": "mouse_gyro",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "enum",
+      "default": "auto",
+      "options": [
+        "auto",
+        "0",
+        "1"
+      ],
+      "label": {
+        "fr": "Souris comme gyroscope",
+        "en": "Mouse as gyro",
+        "es": "Ratón como giroscopio",
+        "ja": "マウスをジャイロとして使用"
+      },
+      "help": {
+        "fr": "auto : actif pour ce jeu (la souris vise comme le gyroscope de la manette), 1 force, 0 coupe (la souris devient le stick droit). Les commandes de mouvement doivent être activées dans les options du jeu.",
+        "en": "auto: on for this game (the mouse aims like the pad's gyro), 1 forces it, 0 turns it off (the mouse is a right stick). Motion controls must be on in the game's options.",
+        "es": "auto: activo para este juego (el ratón apunta como el giroscopio del mando), 1 lo fuerza, 0 lo desactiva (el ratón es el stick derecho). Los controles de movimiento deben estar activados en las opciones del juego.",
+        "ja": "auto：このゲームではオン（マウスがコントローラーのジャイロのように照準します）、1で強制オン、0でオフ（マウスは右スティックになります）。ゲームのオプションでモーションコントロールを有効にしておく必要があります。"
+      }
+    },
+    {
+      "key": "mouse_gyro_sens",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "0.04",
+      "min": 0.002,
+      "max": 1,
+      "slider": true,
+      "step": 0.002,
+      "label": {
+        "fr": "Sensibilité de visée (degrés par pas)",
+        "en": "Aim sensitivity (degrees per count)",
+        "es": "Sensibilidad de puntería (grados por paso)",
+        "ja": "照準感度（1カウントあたりの角度）"
+      },
+      "help": {
+        "fr": "Degrés dont la manette virtuelle tourne par pas de souris (0,002 à 1). 0,04 fait environ un tour de caméra pour 11,9 cm à 800 DPI. La sensibilité des options du jeu s'y multiplie.",
+        "en": "Degrees the virtual controller turns per mouse count (0.002 to 1). 0.04 is about one camera turn per 11.9 cm at 800 DPI. The game's own camera sensitivity multiplies it.",
+        "es": "Grados que gira el mando virtual por cada paso del ratón (de 0,002 a 1). 0,04 equivale a una vuelta de cámara cada 11,9 cm a 800 DPI. La sensibilidad de las opciones del juego se multiplica por este valor.",
+        "ja": "マウス1カウントごとに仮想コントローラーが回る角度です（0.002～1）。0.04は800 DPIでマウスを約11.9 cm動かすとカメラが1周する値です。ゲーム側のカメラ感度はこの値に掛け合わされます。"
+      }
+    },
+    {
+      "key": "mouse_gyro_cm360",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "0",
+      "min": 0,
+      "max": 200,
+      "label": {
+        "fr": "Centimètres pour un tour complet",
+        "en": "Centimetres per full turn",
+        "es": "Centímetros por vuelta completa",
+        "ja": "1周あたりのセンチメートル"
+      },
+      "help": {
+        "fr": "Distance de souris pour un tour complet de caméra, au DPI choisi (0 à 200). Au-dessus de 0, remplace la sensibilité en degrés par pas.",
+        "en": "Mouse travel for a full camera turn at the chosen DPI (0 to 200). Above 0, replaces the degrees-per-count sensitivity.",
+        "es": "Recorrido del ratón para una vuelta completa de cámara con los DPI elegidos (de 0 a 200). Si es mayor que 0, sustituye la sensibilidad en grados por paso.",
+        "ja": "選んだDPIで、カメラを1周させるためのマウスの移動距離です（0～200）。0より大きいと、1カウントあたりの角度による感度の代わりに使われます。"
+      }
+    },
+    {
+      "key": "mouse_gyro_dpi",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "int",
+      "default": "800",
+      "min": 100,
+      "max": 32000,
+      "label": {
+        "fr": "DPI de la souris",
+        "en": "Mouse DPI",
+        "es": "DPI del ratón",
+        "ja": "マウスのDPI"
+      },
+      "help": {
+        "fr": "Résolution de la souris (100 à 32000), utilisée avec les centimètres pour un tour.",
+        "en": "Mouse resolution (100 to 32000), used with the centimetres per turn.",
+        "es": "Resolución del ratón (de 100 a 32000), usada junto con los centímetros por vuelta.",
+        "ja": "マウスの解像度です（100～32000）。1周あたりのセンチメートルと併せて使います。"
+      }
+    },
+    {
+      "key": "mouse_gyro_x",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "1",
+      "min": 0.1,
+      "max": 4,
+      "slider": true,
+      "step": 0.1,
+      "label": {
+        "fr": "Échelle horizontale",
+        "en": "Horizontal scale",
+        "es": "Escala horizontal",
+        "ja": "水平方向のスケール"
+      },
+      "help": {
+        "fr": "Multiplicateur de l'axe horizontal (0,1 à 4).",
+        "en": "Multiplier of the horizontal axis (0.1 to 4).",
+        "es": "Multiplicador del eje horizontal (de 0,1 a 4).",
+        "ja": "水平軸の倍率です（0.1～4）。"
+      }
+    },
+    {
+      "key": "mouse_gyro_y",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "float",
+      "default": "1",
+      "min": 0.1,
+      "max": 4,
+      "slider": true,
+      "step": 0.1,
+      "label": {
+        "fr": "Échelle verticale",
+        "en": "Vertical scale",
+        "es": "Escala vertical",
+        "ja": "垂直方向のスケール"
+      },
+      "help": {
+        "fr": "Multiplicateur de l'axe vertical (0,1 à 4).",
+        "en": "Multiplier of the vertical axis (0.1 to 4).",
+        "es": "Multiplicador del eje vertical (de 0,1 a 4).",
+        "ja": "垂直軸の倍率です（0.1～4）。"
+      }
+    },
+    {
+      "key": "mouse_gyro_invert_y",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "bool",
+      "default": "0",
+      "label": {
+        "fr": "Inverser l'axe vertical",
+        "en": "Invert the vertical axis",
+        "es": "Invertir el eje vertical",
+        "ja": "垂直軸を反転"
+      },
+      "help": {
+        "fr": "Souris vers le haut = regarder vers le bas.",
+        "en": "Mouse up looks down.",
+        "es": "Ratón hacia arriba = mirar hacia abajo.",
+        "ja": "マウスを上に動かすと下を向きます。"
+      }
+    },
+    {
+      "key": "mouse_gyro_pitch",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "int",
+      "default": "60",
+      "min": 10,
+      "max": 89,
+      "slider": true,
+      "step": 1,
+      "label": {
+        "fr": "Inclinaison maximale (degrés)",
+        "en": "Maximum pitch (degrees)",
+        "es": "Inclinación máxima (grados)",
+        "ja": "最大ピッチ（度）"
+      },
+      "help": {
+        "fr": "Jusqu'où la manette virtuelle s'incline vers le haut ou le bas (10 à 89).",
+        "en": "How far the virtual controller tilts up or down (10 to 89).",
+        "es": "Hasta dónde se inclina el mando virtual hacia arriba o hacia abajo (de 10 a 89).",
+        "ja": "仮想コントローラーを上下に傾ける最大の角度です（10～89）。"
+      }
+    },
+    {
+      "key": "mouse_gyro_attitude",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "enum",
+      "default": "flat",
+      "options": [
+        "flat",
+        "upright"
+      ],
+      "label": {
+        "fr": "Position de départ de la manette virtuelle",
+        "en": "Virtual controller start attitude",
+        "es": "Posición inicial del mando virtual",
+        "ja": "仮想コントローラーの初期姿勢"
+      },
+      "help": {
+        "fr": "flat : à plat, bord supérieur vers l'avant ; upright : face au joueur, bord supérieur vers le haut (mode portable).",
+        "en": "flat: face up, top edge forward; upright: facing the player, top edge up (as in handheld mode).",
+        "es": "flat: plano, borde superior hacia delante; upright: frente al jugador, borde superior hacia arriba (como en modo portátil).",
+        "ja": "flat：水平（上端が前）。upright：プレイヤーに向けて立てた状態（上端が上、携帯モードと同じ）。"
+      }
+    },
+    {
+      "key": "mouse_gyro_recenter_key",
+      "section": "mouse",
+      "ini_section": "input",
+      "type": "enum",
+      "default": "none",
+      "options": [
+        "none",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6",
+        "f7",
+        "f9",
+        "f12",
+        "num0",
+        "num1",
+        "num2",
+        "num3",
+        "num4",
+        "num5",
+        "num6",
+        "num7",
+        "num8",
+        "num9",
+        "space",
+        "tab",
+        "enter",
+        "backspace",
+        "lshift",
+        "rshift",
+        "lctrl",
+        "rctrl",
+        "lalt",
+        "capslock",
+        "insert",
+        "delete",
+        "home",
+        "end",
+        "pageup",
+        "pagedown",
+        "up",
+        "down",
+        "left",
+        "right",
+        "num_add",
+        "num_sub",
+        "num_mul",
+        "num_div",
+        "num_decimal",
+        "minus",
+        "equals",
+        "lbracket",
+        "rbracket",
+        "semicolon",
+        "apostrophe",
+        "comma",
+        "period",
+        "slash",
+        "backslash",
+        "grave",
+        "mouse_l",
+        "mouse_r",
+        "mouse_m",
+        "mouse_x1",
+        "mouse_x2"
+      ],
+      "label": {
+        "fr": "Touche de recentrage",
+        "en": "Recenter key",
+        "es": "Tecla de recentrado",
+        "ja": "リセンターキー"
+      },
+      "help": {
+        "fr": "Remet la manette virtuelle à plat, en plus du bouton Y (Q), qui recentre aussi la caméra du jeu.",
+        "en": "Levels the virtual controller, besides the Y button (Q), which recentres the game's camera too.",
+        "es": "Nivela el mando virtual, además del botón Y (Q), que también recentra la cámara del juego.",
+        "ja": "仮想コントローラーを水平に戻します。Yボタン（Q）もゲームのカメラを中央に戻します。"
+      }
+    },
+    {
+      "key": "pad_layout",
+      "section": "controller",
+      "ini_section": "input",
+      "type": "enum",
+      "default": "auto",
+      "options": [
+        "auto",
+        "nintendo",
+        "xbox"
+      ],
+      "label": {
+        "fr": "Disposition des boutons",
+        "en": "Button layout",
+        "es": "Distribución de botones",
+        "ja": "ボタン配置"
+      },
+      "help": {
+        "fr": "Quel bouton de la manette est le A de la Switch.",
+        "en": "Which pad button is the Switch A.",
+        "es": "Qué botón del mando es el A de la consola.",
+        "ja": "コントローラーのどのボタンを本体のAボタンにするかを選びます。"
+      }
+    },
+    {
+      "key": "stick_sens",
+      "section": "controller",
+      "ini_section": "input",
+      "type": "float",
+      "default": "1",
+      "min": 0.1,
+      "max": 3,
+      "label": {
+        "fr": "Vitesse du stick droit",
+        "en": "Right-stick camera speed",
+        "es": "Velocidad de cámara del stick derecho",
+        "ja": "右スティックのカメラ速度"
+      },
+      "help": {
+        "fr": "0,1 à 3.",
+        "en": "0.1 to 3.",
+        "es": "De 0,1 a 3.",
+        "ja": "0.1～3。"
+      }
+    },
+    {
+      "key": "stick_deadzone",
+      "section": "controller",
+      "ini_section": "input",
+      "type": "int",
+      "default": "8",
+      "min": 0,
+      "max": 50,
+      "label": {
+        "fr": "Zone morte des sticks (%)",
+        "en": "Stick dead zone (%)",
+        "es": "Zona muerta de los sticks (%)",
+        "ja": "スティックのデッドゾーン（%）"
+      },
+      "help": {
+        "fr": "0 à 50.",
+        "en": "0 to 50.",
+        "es": "De 0 a 50.",
+        "ja": "0～50。"
+      }
+    },
+    {
+      "key": "motion",
+      "section": "controller",
+      "ini_section": "input",
+      "type": "bool",
+      "default": "1",
+      "label": {
+        "fr": "Commandes de mouvement",
+        "en": "Motion controls",
+        "es": "Controles de movimiento",
+        "ja": "モーションコントロール"
+      },
+      "help": {
+        "fr": "Gyroscope de la manette.",
+        "en": "Pad gyroscope.",
+        "es": "Giroscopio del mando.",
+        "ja": "コントローラーのジャイロです。"
+      }
+    },
+    {
+      "key": "rumble",
+      "section": "controller",
+      "ini_section": "input",
+      "type": "bool",
+      "default": "1",
+      "label": {
+        "fr": "Vibrations",
+        "en": "Rumble",
+        "es": "Vibración",
+        "ja": "振動"
+      },
+      "help": {
+        "fr": "",
+        "en": "",
+        "es": "",
+        "ja": ""
+      }
+    },
+    {
+      "key": "save_profile_backups",
+      "section": "save",
+      "ini_section": "player",
+      "type": "int",
+      "default": "10",
+      "min": 0,
+      "max": 1000,
+      "label": {
+        "fr": "Sauvegardes du profil à conserver",
+        "en": "Profile backups to keep",
+        "es": "Copias del perfil que se conservan",
+        "ja": "保持するプロフィールのバックアップ数"
+      },
+      "help": {
+        "fr": "Chaque lancement qui modifie la sauvegarde en garde une copie ; seules les plus récentes sont conservées. 0 les garde toutes.",
+        "en": "Each launch that changes the save keeps a copy of it; only the newest are kept. 0 keeps them all.",
+        "es": "Cada inicio que modifica el guardado conserva una copia; solo se guardan las más recientes. 0 las conserva todas.",
+        "ja": "セーブデータを変更する起動のたびにコピーを残し、新しいものだけを保持します。0にするとすべて保持します。"
+      }
+    },
+    {
+      "key": "lang",
+      "section": "language",
+      "ini_section": "language",
+      "type": "enum",
+      "options": [
+        "ja",
+        "en-US",
+        "fr",
+        "de",
+        "it",
+        "es",
+        "zh-CN",
+        "ko",
+        "nl",
+        "pt",
+        "ru",
+        "zh-TW",
+        "en-GB",
+        "fr-CA",
+        "es-419",
+        "zh-Hans",
+        "zh-Hant",
+        "pt-BR"
+      ],
+      "label": {
+        "fr": "Langue du jeu",
+        "en": "Game language",
+        "es": "Idioma del juego",
+        "ja": "ゲームの言語"
+      },
+      "help": {
+        "fr": "Vide : la langue du lanceur ou celle de Windows (choix de la page Langue). Prise en compte au prochain lancement du jeu.",
+        "en": "Empty: the launcher's language or Windows' (chosen on the Language page). Applied the next time the game starts.",
+        "es": "Vacío: el idioma del lanzador o el de Windows (se elige en la página Idioma). Se aplica en el próximo inicio del juego.",
+        "ja": "未設定の場合はランチャーまたはWindowsの言語になります（言語ページで選択）。次回のゲーム起動時に反映されます。"
+      }
+    }
+  ],
+  "bindings": {
+    "ini_section": "input",
+    "buttons": [
+      {
+        "id": "ZR",
+        "label": {
+          "fr": "ZR · Tirer",
+          "en": "ZR · Shoot",
+          "es": "ZR · Disparar",
+          "ja": "ZR · 発射"
+        },
+        "default": "Mouse left"
+      },
+      {
+        "id": "R",
+        "label": {
+          "fr": "R · Arme secondaire",
+          "en": "R · Sub weapon",
+          "es": "R · Arma secundaria",
+          "ja": "R · サブ武器"
+        },
+        "default": "Mouse right, R"
+      },
+      {
+        "id": "ZL",
+        "label": {
+          "fr": "ZL · Plonger / nager",
+          "en": "ZL · Squid / swim",
+          "es": "ZL · Transformar / nadar",
+          "ja": "ZL · 変身 / 泳ぐ"
+        },
+        "default": "Left Shift"
+      },
+      {
+        "id": "B",
+        "label": {
+          "fr": "B · Sauter (retour dans les menus)",
+          "en": "B · Jump (back in menus)",
+          "es": "B · Saltar (volver en los menús)",
+          "ja": "B · ジャンプ（メニューでは戻る）"
+        },
+        "default": "Space"
+      },
+      {
+        "id": "RCLICK",
+        "label": {
+          "fr": "Clic stick droit · Arme spéciale",
+          "en": "Right stick click · Special weapon",
+          "es": "Clic del stick derecho · Arma especial",
+          "ja": "右スティック押し込み · スペシャル武器"
+        },
+        "default": "E, Mouse middle"
+      },
+      {
+        "id": "Y",
+        "label": {
+          "fr": "Y · Recentrer la caméra",
+          "en": "Y · Recenter the camera",
+          "es": "Y · Recentrar la cámara",
+          "ja": "Y · カメラをリセンター"
+        },
+        "default": "Q"
+      },
+      {
+        "id": "A",
+        "label": {
+          "fr": "A · Valider, interagir",
+          "en": "A · Confirm, interact",
+          "es": "A · Confirmar, interactuar",
+          "ja": "A · 決定、操作"
+        },
+        "default": "F"
+      },
+      {
+        "id": "X",
+        "label": {
+          "fr": "X · Carte",
+          "en": "X · Map",
+          "es": "X · Mapa",
+          "ja": "X · マップ"
+        },
+        "default": "M, Tab"
+      },
+      {
+        "id": "L",
+        "label": {
+          "fr": "L · Onglets des menus",
+          "en": "L · Menu tabs",
+          "es": "L · Pestañas de los menús",
+          "ja": "L · メニューのタブ"
+        },
+        "default": "Z"
+      },
+      {
+        "id": "PLUS",
+        "label": {
+          "fr": "Plus · Menu",
+          "en": "Plus · Menu",
+          "es": "Más · Menú",
+          "ja": "＋ · メニュー"
+        },
+        "default": "Enter"
+      },
+      {
+        "id": "MINUS",
+        "label": {
+          "fr": "Moins",
+          "en": "Minus",
+          "es": "Menos",
+          "ja": "－"
+        },
+        "default": "Backspace"
+      },
+      {
+        "id": "LCLICK",
+        "label": {
+          "fr": "Clic stick gauche",
+          "en": "Left stick click",
+          "es": "Clic del stick izquierdo",
+          "ja": "左スティック押し込み"
+        },
+        "default": "Left Ctrl"
+      },
+      {
+        "id": "LEFT",
+        "label": {
+          "fr": "Croix gauche",
+          "en": "D-pad left",
+          "es": "Cruceta izquierda",
+          "ja": "十字キー左"
+        },
+        "default": "Left arrow"
+      },
+      {
+        "id": "UP",
+        "label": {
+          "fr": "Croix haut · « Par ici ! »",
+          "en": "D-pad up · \"This way!\"",
+          "es": "Cruceta arriba · «¡Por aquí!»",
+          "ja": "十字キー上 · 「こっちだ！」"
+        },
+        "default": "Up arrow"
+      },
+      {
+        "id": "RIGHT",
+        "label": {
+          "fr": "Croix droite",
+          "en": "D-pad right",
+          "es": "Cruceta derecha",
+          "ja": "十字キー右"
+        },
+        "default": "Right arrow"
+      },
+      {
+        "id": "DOWN",
+        "label": {
+          "fr": "Croix bas · « Booyah ! »",
+          "en": "D-pad down · \"Booyah!\"",
+          "es": "Cruceta abajo · «¡Celebrar!»",
+          "ja": "十字キー下 · 「やったー！」"
+        },
+        "default": "Down arrow"
+      }
+    ],
+    "key_only_buttons": [
+      {
+        "id": "LSTICK_UP",
+        "label": {
+          "fr": "Déplacement · avant",
+          "en": "Move · forward",
+          "es": "Movimiento · adelante",
+          "ja": "移動 · 前"
+        },
+        "default": "W"
+      },
+      {
+        "id": "LSTICK_LEFT",
+        "label": {
+          "fr": "Déplacement · gauche",
+          "en": "Move · left",
+          "es": "Movimiento · izquierda",
+          "ja": "移動 · 左"
+        },
+        "default": "A"
+      },
+      {
+        "id": "LSTICK_DOWN",
+        "label": {
+          "fr": "Déplacement · arrière",
+          "en": "Move · back",
+          "es": "Movimiento · atrás",
+          "ja": "移動 · 後ろ"
+        },
+        "default": "S"
+      },
+      {
+        "id": "LSTICK_RIGHT",
+        "label": {
+          "fr": "Déplacement · droite",
+          "en": "Move · right",
+          "es": "Movimiento · derecha",
+          "ja": "移動 · 右"
+        },
+        "default": "D"
+      },
+      {
+        "id": "RSTICK_UP",
+        "label": {
+          "fr": "Stick droit haut (visée sans mouvement)",
+          "en": "Right stick up (aiming without motion)",
+          "es": "Stick derecho arriba (puntería sin movimiento)",
+          "ja": "右スティック上（モーションなしの照準）"
+        },
+        "default": "I"
+      },
+      {
+        "id": "RSTICK_LEFT",
+        "label": {
+          "fr": "Stick droit gauche",
+          "en": "Right stick left",
+          "es": "Stick derecho izquierda",
+          "ja": "右スティック左"
+        },
+        "default": "J"
+      },
+      {
+        "id": "RSTICK_DOWN",
+        "label": {
+          "fr": "Stick droit bas",
+          "en": "Right stick down",
+          "es": "Stick derecho abajo",
+          "ja": "右スティック下"
+        },
+        "default": "K"
+      },
+      {
+        "id": "RSTICK_RIGHT",
+        "label": {
+          "fr": "Stick droit droite",
+          "en": "Right stick right",
+          "es": "Stick derecho derecha",
+          "ja": "右スティック右"
+        },
+        "default": "L"
+      },
+      {
+        "id": "SHAKE",
+        "label": {
+          "fr": "Secouer",
+          "en": "Shake",
+          "es": "Agitar",
+          "ja": "振る"
+        },
+        "default": "G"
+      }
+    ],
+    "pad_names": [
+      "south",
+      "east",
+      "west",
+      "north",
+      "l",
+      "r",
+      "zl",
+      "zr",
+      "start",
+      "back",
+      "lstick",
+      "rstick",
+      "dpad_left",
+      "dpad_up",
+      "dpad_right",
+      "dpad_down",
+      "lpaddle1",
+      "rpaddle1",
+      "lpaddle2",
+      "rpaddle2"
+    ],
+    "key_names": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+      "y",
+      "z",
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "f2",
+      "f3",
+      "f4",
+      "f5",
+      "f6",
+      "f7",
+      "f9",
+      "f12",
+      "num0",
+      "num1",
+      "num2",
+      "num3",
+      "num4",
+      "num5",
+      "num6",
+      "num7",
+      "num8",
+      "num9",
+      "space",
+      "tab",
+      "enter",
+      "backspace",
+      "lshift",
+      "rshift",
+      "lctrl",
+      "rctrl",
+      "lalt",
+      "capslock",
+      "insert",
+      "delete",
+      "home",
+      "end",
+      "pageup",
+      "pagedown",
+      "up",
+      "down",
+      "left",
+      "right",
+      "num_add",
+      "num_sub",
+      "num_mul",
+      "num_div",
+      "num_decimal",
+      "minus",
+      "equals",
+      "lbracket",
+      "rbracket",
+      "semicolon",
+      "apostrophe",
+      "comma",
+      "period",
+      "slash",
+      "backslash",
+      "grave",
+      "mouse_l",
+      "mouse_r",
+      "mouse_m",
+      "mouse_x1",
+      "mouse_x2"
+    ]
+  }
+}

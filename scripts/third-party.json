@@ -1,0 +1,28 @@
+{
+  "_comment": "Configuration of scripts/third-party-inventory.py. 'allowed' lists the licenses a dependency may use without a review; extend it only with a reason in 'allowed_why'.",
+  "title": "Third-party dependencies of the launcher",
+  "output": "docs/third-party-dependencies.md",
+  "intro": [
+    "Every Rust crate and npm package the launcher pins in `launcher/src-tauri/Cargo.lock` and `launcher/package-lock.json`. The fonts, the programs shipped ready-built and what the install wizard downloads are described in [launcher/THIRD_PARTY_NOTICES.md](../launcher/THIRD_PARTY_NOTICES.md); the engine has no package manager dependencies, and its third-party code is listed in [engine/THIRD_PARTY_NOTICES.md](../engine/THIRD_PARTY_NOTICES.md)."
+  ],
+  "cargo": [
+    {
+      "label": "Launcher: Rust crates (Windows x64)",
+      "manifest": "launcher/src-tauri/Cargo.toml",
+      "platforms": ["x86_64-pc-windows-msvc"],
+      "note": "\"runtime\": linked into the launcher; \"build\": used only while compiling; \"dev\": tests and developer tools only, never linked into the launcher."
+    }
+  ],
+  "npm": [
+    {
+      "label": "Launcher: npm packages",
+      "lockfile": "launcher/package-lock.json",
+      "note": "\"runtime\": bundled into the launcher's interface; \"dev\": build tools, not shipped; \"optional\": platform-specific builds of a tool, installed only on that platform."
+    }
+  ],
+  "allowed": [
+    "MIT", "MIT-0", "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "ISC",
+    "Zlib", "Unicode-3.0", "Unicode-DFS-2016", "BSL-1.0", "CC0-1.0", "Unlicense", "MPL-2.0", "OFL-1.1"
+  ],
+  "allowed_why": "Permissive licenses compatible with the project's MIT License, plus the SIL Open Font License for the bundled fonts. MPL-2.0 is a file-level license: the packages under it are used unmodified, and a change to one of their files would have to be published under MPL-2.0."
+}

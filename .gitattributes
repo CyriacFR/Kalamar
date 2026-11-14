@@ -1,0 +1,15 @@
+# Line endings: text files are stored with LF and checked out with LF on every system; Windows scripts are checked
+# out with CRLF. engine/ has its own .gitattributes with the same rules.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files: never converted, never shown as text in a diff.
+*.png binary
+*.jpg binary
+*.ico binary
+*.icns binary
+*.ttf binary
+*.woff2 binary
+*.gz binary

@@ -1,0 +1,71 @@
+# The engine's checks that need no game files: the content and settings checks, the tests of its tools, and the
+# differential tests of the CPU helpers against Unicorn. Nothing is compiled from the runtime: even the runtime alone
+# (build_game.py --make-runtime-lib) needs the module layout the code generator derives from the player's game
+# (generated/<version>/layout.h and layout.json). No secret is used.
+name: Engine
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Content, settings and packaging checks
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python tools/check_content.py
+      - run: python tests/settings_doc_check.py
+      - run: python tests/env_names_check.py
+      - run: python tests/pack_shader_cache_test.py
+      - run: python tests/release_linux_apprun_test.py
+
+  tools:
+    name: Tool tests and CPU differential tests
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Python packages (the versions of tools/requirements.txt)
+        run: python -m pip install capstone==5.0.9 unicorn==2.1.4 lz4==4.4.5 numpy==2.5.4
+      - uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2.33.0
+        with:
+          msystem: UCRT64
+          release: false
+          update: false
+          install: mingw-w64-ucrt-x86_64-clang mingw-w64-ucrt-x86_64-lld
+      - name: Clang on PATH
+        run: Add-Content -Path $env:GITHUB_PATH -Value 'C:\msys64\ucrt64\bin'
+      - run: python tests/exefs_patches_test.py
+      - run: python tests/cheats_vm_check.py
+      - run: python tests/spin_waits_test.py
+      - run: python tests/flags_check.py
+      - name: Exclusive monitor on several threads (the ABA case is a known gap, reported only)
+        run: python tests/excl_mt.py
+      - run: python tests/diff/atomic.py
+      - run: python tests/diff/simd.py
