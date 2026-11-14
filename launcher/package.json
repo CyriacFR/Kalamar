@@ -15,9 +15,9 @@
     "bundle:runtime": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bundle-runtime.ps1"
   },
   "dependencies": {
-    "@fontsource-variable/archivo": "5.2.8",
-    "@fontsource-variable/rubik": "5.2.8",
-    "@fontsource/jetbrains-mono": "5.2.8",
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource-variable/rubik": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-dialog": "2.8.4",
     "react": "^19.1.0",
@@ -29,6 +29,6 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^6.0.2",
     "typescript": "~6.0.3",
-    "vite": "^8.0.16"
+    "vite": "^8.3.8"
   }
 }
