@@ -359,7 +359,7 @@ whose effect does not follow:
 | host: teams OK | `Down` once per row and once more, `A`, again after 180 frames while the team screen stays | the team screen is left; every asked row has its team in the room |
 | guest: a session | `X` (search again) until one answers | a datagram on 35000 from another address starting with byte 1 (an answer; a search starts with 0), then the search's end |
 | guest: join | `A`, `A` | the library's network restarts |
-| pre-match | `A` every 2.5 s (host) / 3 s (guest) | the stage's scene pack opens (all of them open once at boot; this is the second time) |
+| pre-match | `A` every 2.5 s (host) / 3 s (guest) | the stage's scene pack opens (all of them open once at boot; this is the second time); a later round on the stage of the round before opens no pack: its intro's music opening stands for it ([Rounds](#rounds)) |
 | stage intro | none | the intro's music opens and the presents run steadily ([Out of sight](#out-of-sight)): the window is shown |
 | match, results | none once shown (`A` every 4 s while hidden) | the match record appears (below) |
 
@@ -478,6 +478,13 @@ After a match the game goes back to the room by itself, the session kept: the ho
 room screen, the guest's in the lobby, both members in the room; no scene pack is opened for it
 (`LobbyLocal` stays loaded), so the runtime takes the room screen's update running again (`main+0x38f7ff0`, hooked from
 the record on) as the end of the result screens.
+
+A round on the stage of the round before reloads no stage pack either (measured: two rounds with the same `stage=`,
+and a random stage that fell on the same one; before this was handled the second match was played with the flow
+still pressing at its pre-match screen, no result written and `start-timeout` at the step's end). The intro's music
+is streamed anew for each match and is then the first file the stage opens: from the second round on, while the flow
+waits at the pre-match screen, that music opening counts as the stage loading, with the stage name of the round
+before (`automatch_file`).
 
 The result screens are the player's: the window is shown from the intro to the room. When the player gives no input
 (gamepad, keys or mouse; `input_human_last_ms`, `input.c`) for `results_hold` seconds, the runtime presses A every

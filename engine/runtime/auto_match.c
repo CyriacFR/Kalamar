@@ -449,6 +449,16 @@ void automatch_file(const char *path) {
         }
         return;
     }
+    // A later round on the stage of the round before reloads no scene pack (measured: two rounds on one stage, the
+    // second played with no pack opened and the flow still at its pre-match screen until the step's time was up). The
+    // intro's music is streamed anew each match and is then the stage's first file: it stands for the pack, whose
+    // name is the one already held (vss_name). Only from the second round: at the first one vss_name is the last
+    // pack of the boot's listing, and the pack always opens.
+    if (round_no > 1 && LOAD(in_room) && !LOAD(stage_open) && !strncmp(path, INTRO_STREAM, sizeof INTRO_STREAM - 1)) {
+        rt_log("automatch: +%.1f s the stage of the round before again: no scene pack, its intro's music opens", now_s());
+        stage_open_ms = plat_now_ms(), plat_xchg32(&stage_open, 1);
+        BUMP(seq_vss);
+    }
     if (!LOAD(stage_open) || LOAD(seq_vss_go)) return;
     if (diag && plat_now_ms() - stage_open_ms < 30000 && plat_inc32(&diag_files) <= 600)
         rt_log("automatch: +%.2f s file %s", now_s(), path);
